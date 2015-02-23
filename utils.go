@@ -12,7 +12,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-func GetFields(s string) (m map[string]interface{}) {
+func sFields(s string) (m map[string]interface{}) {
 	var qf []string
 	qf = strings.Split(s, ",")
 	if len(qf) != 0 {

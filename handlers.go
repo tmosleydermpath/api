@@ -18,14 +18,21 @@ func handleError(w http.ResponseWriter, code int) {
 	JSONError(w, Error{codes[code], code}, code)
 
 }
+func getVars(r *http.Request) map[string]string {
+	return mux.Vars(r)
+}
+
+func getFields(r *http.Request, f string) string {
+	query := r.URL.Query()
+	return query.Get(f)
+}
 
 func CaseShow(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	query := r.URL.Query()
-	prettySelector := query.Get("pretty")
-	queryFields := query.Get("fields")
+	vars := getVars(r)
+	prettySelector := getFields(r, "pretty")
+	queryFields := getFields(r, "fields")
 
-	fields := GetFields(queryFields)
+	fields := sFields(queryFields)
 	if queryFields == "" {
 		fields = nil
 	}
@@ -54,14 +61,13 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 }
 
 func CaseIndex(w http.ResponseWriter, r *http.Request) {
-	//query := r.URL.Query()
-	prettySelector := r.URL.Query().Get("pretty")
-	//queryFields := query.Get("fields")
+	prettySelector := getFields(r, "pretty")
+	queryFields := getFields(r, "fields")
 
-	//fields := GetFields(queryFields)
-	//if queryFields == "" {
-	//	fields = nil
-	//}
+	fields := sFields(queryFields)
+	if queryFields == "" {
+		fields = nil
+	}
 
 	session := getSession()
 	defer session.Close()
@@ -72,7 +78,7 @@ func CaseIndex(w http.ResponseWriter, r *http.Request) {
 	collection := session.DB("DLCS").C("DLCSCase")
 
 	var results []Case
-	err := collection.Find(bson.M{}).All(&results)
+	err := collection.Find(bson.M{}).Select(fields).All(&results)
 	if err != nil {
 		handleError(w, 404)
 		return
