@@ -1,6 +1,9 @@
 package main
 
-import "gopkg.in/mgo.v2/bson"
+import (
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
+)
 
 type DepartList struct {
 	Collection    bool `bson:"Collection,omitempty" json:"Collection,omitempty"`
@@ -74,43 +77,43 @@ type Case struct {
 }
 
 type Specimens []struct {
-	PAS           bool        `json:"PAS"`
-	QRCode        string      `bson:"QRCode" json:"QRCode"`
-	SN            string      `bson:"SN" json:"SN"`
-	AdditStain    int         `json:"additStain"`
-	AdditStainReq string      `bson:"additStainReq" json:"additStainReq"`
-	AntomicText   string      `bson:"anatomicText" json:"anatomicText"`
-	Cassette      int         `json:"cassette"`
+	PAS           bool        `bson:"PAS,omitempty" json:"PAS,omitempty"`
+	QRCode        string      `bson:"QRCode,omitempty" json:"QRCode,omitempty"`
+	SN            string      `bson:"SN,omitempty" json:"SN,omitempty"`
+	AdditStain    int         `bson:"additStain,omitempty" json:"additStain,omitempty"`
+	AdditStainReq string      `bson:"additStainReq,omitempty" json:"additStainReq,omitempty"`
+	AntomicText   string      `bson:"anatomicText,omitempty" json:"anatomicText,omitempty"`
+	Cassette      int         `bson:"cassette,omitempty" json:"cassette,omitempty"`
 	Collect       *Collect    `bson:"collect,omitempty" json:"collect,omitempty"`
-	CompleDay     int         `json:"compleDay"`
+	CompleDay     int         `bson:"compleDay,omitempty" json:"compleDay,omitempty"`
 	DepartList    *DepartList `bson:"departList,omitempty" json:"departList,omitempty"`
-	DiffDiagText  string      `bson:"diffDiagText" json:"diffDiagText"`
+	DiffDiagText  string      `bson:"diffDiagText,omitempty" json:"diffDiagText,omitempty"`
 	Gross         *Gross      `bson:"gross,omitempty" json:"gross,omitempty"`
-	GrossNote     string      `bson:"grossNote" json:"grossNote"`
-	Hold          bool        `json:"hold"`
-	Index         int         `json:"index"`
-	Margin        bool        `json:"margin"`
-	Name          string      `json:"name"`
-	PhistoryText  string      `bson:"phistoryText" json:"phistoryText"`
-	Processing    bool        `json:"processing"`
-	Recut         bool        `json:"recut"`
-	Scanned       int         `json:"scanned"`
-	Slide         int         `json:"slide"`
-	SlideSum      int         `json:"slideSum"`
-	SourceCode    string      `bson:"sourceCode" json:"sourceCode"`
-	Status        string      `json:"status"`
-	Stop          bool        `json:"stop"`
-	Type          string      `json:"type"`
+	GrossNote     string      `bson:"grossNote,omitempty" json:"grossNote,omitempty"`
+	Hold          bool        `bson:"hold,omitempty" json:"hold,omitempty"`
+	Index         int         `bson:"index,omitempty" json:"index,omitempty"`
+	Margin        bool        `bson:"margin,omitempty" json:"margin,omitempty"`
+	Name          string      `bson:"name,omitempty" json:"name,omitempty"`
+	PhistoryText  string      `bson:"phistoryText,omitempty" json:"phistoryText,omitempty"`
+	Processing    bool        `bson:"processing,omitempty" json:"processing,omitempty"`
+	Recut         bool        `bson:"recut,omitempty" json:"recut,omitempty"`
+	Scanned       int         `bson:"scanned,omitempty" json:"scanned,omitempty"`
+	Slide         int         `bson:"slide,omitempty" json:"slide,omitempty"`
+	SlideSum      int         `bson:"slideSum,omitempty" json:"slideSum,omitempty"`
+	SourceCode    string      `bson:"sourceCode,omitempty" json:"sourceCode,omitempty"`
+	Status        string      `bson:"status,omitempty" json:"status,omitempty"`
+	Stop          bool        `bson:"stop,omitempty" json:"stop,omitempty"`
+	Type          string      `bson:"type,omitempty" json:"type,omitempty"`
 }
 
 type Insurance []struct {
-	Type string `json:"type"`
+	Type string `bson:"type,omitempty" json:"type,omitempty"`
 }
 
 type DisplayType struct {
 	S struct {
-		B string `json:"B"`
-		C string `json:"C"`
+		B string `bson:"B,omitempty" json:"B,omitempty"`
+		C string `bson:"C,omitempty" json:"C,omitempty"`
 	}
 }
 type Gross struct {
@@ -125,6 +128,23 @@ type Gross struct {
 type Collect struct {
 	Account string `bson:"account" json:"account"`
 	Date    int    `bson:"date" json:"date"`
+}
+
+func (c *Case) Collection() string {
+	return "DLCSCase"
+}
+
+func (c *Case) Unique() bson.M {
+	return bson.M{"caseID": c.CaseID}
+}
+
+func (c *Case) Indexes() []mgo.Index {
+	index := mgo.Index{
+		Unique:   false,
+		DropDups: false,
+		Key:      []string{"_id"},
+	}
+	return []mgo.Index{index}
 }
 
 type Cases []Case

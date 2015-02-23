@@ -32,4 +32,17 @@ var routes = Routes{
 		"/cases",
 		CaseIndex,
 	},
+	Route{
+		"CassetteShow",
+		"GET",
+		`/cases/{caseId:[a-zA-Z0-9=\-\/]{14}}/cassettes`,
+		CassetteShow,
+	},
+
+	Route{
+		"SlideShow",
+		"GET",
+		`/cases/{caseId:[a-zA-Z0-9=\-\/]{14}}/slides`,
+		SlideShow,
+	},
 }

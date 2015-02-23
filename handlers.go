@@ -60,6 +60,63 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func CassetteShow(w http.ResponseWriter, r *http.Request) {
+	vars := getVars(r)
+	caseId := vars["caseId"]
+	prettySelector := getFields(r, "pretty")
+	queryFields := getFields(r, "fields")
+
+	fields := sFields(queryFields)
+	if queryFields == "" {
+		fields = nil
+	}
+
+	session := getSession()
+	defer session.Close()
+	session.SetMode(mgo.Monotonic, true)
+
+	collection := session.DB("DLCS").C("cassette")
+
+	var results []Cassette
+
+	err := collection.Find(bson.M{"caseID": caseId}).Select(fields).All(&results)
+	if err != nil {
+		fmt.Printf("got an error find cassette for %s\n", err)
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, results, prettySelector, 200)
+}
+
+func SlideShow(w http.ResponseWriter, r *http.Request) {
+	vars := getVars(r)
+	caseId := vars["caseId"]
+	prettySelector := getFields(r, "pretty")
+	queryFields := getFields(r, "fields")
+
+	fields := sFields(queryFields)
+	if queryFields == "" {
+		fields = nil
+	}
+
+	session := getSession()
+	defer session.Close()
+	session.SetMode(mgo.Monotonic, true)
+
+	collection := session.DB("DLCS").C("slide")
+
+	var results []Slide
+
+	err := collection.Find(bson.M{"caseID": caseId}).Select(fields).All(&results)
+	if err != nil {
+		fmt.Printf("got an error finding slide for %s\n", err)
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, results, prettySelector, 200)
+}
 func CaseIndex(w http.ResponseWriter, r *http.Request) {
 	prettySelector := getFields(r, "pretty")
 	queryFields := getFields(r, "fields")
