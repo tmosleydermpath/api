@@ -120,10 +120,21 @@ func SlideShow(w http.ResponseWriter, r *http.Request) {
 func CaseIndex(w http.ResponseWriter, r *http.Request) {
 	prettySelector := getFields(r, "pretty")
 	queryFields := getFields(r, "fields")
+	filterFields := getFields(r, "filter")
+	sortFields := getFields(r, "sort")
+	if sortFields == "" {
+		sortFields = " "
+	}
 
 	fields := sFields(queryFields)
 	if queryFields == "" {
 		fields = nil
+	}
+	var filter = bson.M{}
+	if filterFields == "" {
+		filter = bson.M{}
+	} else {
+		filter = stationSort(filterFields)
 	}
 
 	session := getSession()
@@ -135,7 +146,7 @@ func CaseIndex(w http.ResponseWriter, r *http.Request) {
 	collection := session.DB("DLCS").C("DLCSCase")
 
 	var results []Case
-	err := collection.Find(bson.M{}).Select(fields).All(&results)
+	err := collection.Find(filter).Sort(sortFields).Select(fields).All(&results)
 	if err != nil {
 		handleError(w, 404)
 		return
