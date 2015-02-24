@@ -32,7 +32,9 @@ func stationSort(s string) (m bson.M) {
 	case "slidetrans":
 		return createSortMap("t,t,t,t,t,t,t,f,f")
 	case "microscope":
-		return createAltSortMap("t,t,t,t,t,t,t,t,f")
+		return createMicroMap("t,t,t,t,t,t,f,f,f")
+	case "slideprep":
+		return createSPMap("t,t,t,t,t,t,f,f")
 
 	}
 	return m
@@ -60,7 +62,29 @@ func createSortMap(t string) (m bson.M) {
 	return m
 }
 
-func createAltSortMap(t string) (m bson.M) {
+func createSPMap(t string) (m bson.M) {
+	sf := splitFields(t)
+	c, _ := strconv.ParseBool(sf[0])
+	g, _ := strconv.ParseBool(sf[1])
+	tis, _ := strconv.ParseBool(sf[2])
+	emb, _ := strconv.ParseBool(sf[3])
+	cut, _ := strconv.ParseBool(sf[4])
+	dig, _ := strconv.ParseBool(sf[5])
+	sprep, _ := strconv.ParseBool(sf[6])
+	stran, _ := strconv.ParseBool(sf[7])
+	m = bson.M{
+		"departList.Collection":   c,
+		"departList.Grossing":     g,
+		"departList.Tissue":       tis,
+		"departList.Embedding":    emb,
+		"departList.Cutting":      cut,
+		"departList.DigitalImage": dig,
+		"departList.SlidePrep":    sprep,
+		"departList.SlideTrans":   stran,
+	}
+	return m
+}
+func createMicroMap(t string) (m bson.M) {
 	sf := splitFields(t)
 	c, _ := strconv.ParseBool(sf[0])
 	g, _ := strconv.ParseBool(sf[1])
@@ -80,7 +104,7 @@ func createAltSortMap(t string) (m bson.M) {
 		"departList.DigitalImage":  dig,
 		"departList.Transcription": tran,
 		"departList.SlideTrans":    stran,
-		"departList.Diagnosis":     diag,
+		"departList.Diagnosis":     bson.M{"$in": []interface{}{diag}},
 	}
 	return m
 }
