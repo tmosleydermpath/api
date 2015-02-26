@@ -1,5 +1,10 @@
 package main
 
+import (
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
+)
+
 type Cassette struct {
 	QRCode   string    `bson:"QRCode,omitempty" json:"QRCode,omitempty"`
 	SN       string    `bson:"SN,omitempty" json:"SN,omitempty"`
@@ -18,6 +23,23 @@ type CasGross struct {
 type Tissue struct {
 	Account string `bson:"account,omitempty" json:"account,omitempty"`
 	Date    int    `bson:"date,omitempty" json:"date,omitempty"`
+}
+
+func (b *Cassette) Collection() string {
+	return "cassette"
+}
+
+func (b *Cassette) Unique() bson.M {
+	return bson.M{"QRCode": b.QRCode}
+}
+
+func (b *Cassette) Indexes() []mgo.Index {
+	index := mgo.Index{
+		Unique:   false,
+		DropDups: false,
+		Key:      []string{"_id"},
+	}
+	return []mgo.Index{index}
 }
 
 type Cassettes []Cassette

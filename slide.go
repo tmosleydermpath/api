@@ -1,6 +1,9 @@
 package main
 
-import "gopkg.in/mgo.v2/bson"
+import (
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
+)
 
 type Slide struct {
 	Id        bson.ObjectId `bson:",omitempty" json:",omitempty"`
@@ -35,6 +38,23 @@ type DigitalID struct {
 	SlideImageID string `bson:"slideImageID,omitempty" json:"slideImageID,omitempty"`
 	Title        string `bson:"title,omitempty" json:"title,omitempty"`
 	Width        string `bson:"width,omitempty" json:"width,omitempty"`
+}
+
+func (s *Slide) Collection() string {
+	return "slide"
+}
+
+func (s *Slide) Unique() bson.M {
+	return bson.M{"QRCode": s.QRCode}
+}
+
+func (s *Slide) Indexes() []mgo.Index {
+	index := mgo.Index{
+		Unique:   false,
+		DropDups: false,
+		Key:      []string{"_id"},
+	}
+	return []mgo.Index{index}
 }
 
 type Slides []Slide

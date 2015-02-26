@@ -27,17 +27,20 @@ func getFields(r *http.Request, f string) string {
 	return query.Get(f)
 }
 
-func CaseShow(w http.ResponseWriter, r *http.Request) {
+func getVar(r *http.Request, v string) string {
 	vars := getVars(r)
+	return vars[v]
+}
+
+func CaseShow(w http.ResponseWriter, r *http.Request) {
 	prettySelector := getFields(r, "pretty")
 	queryFields := getFields(r, "fields")
-
+	caseId := getVar(r, "caseId")
 	fields := sFields(queryFields)
 	if queryFields == "" {
 		fields = nil
 	}
 
-	caseId := vars["caseId"]
 	session := getSession()
 
 	defer session.Close()
@@ -61,8 +64,7 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 }
 
 func CassetteShow(w http.ResponseWriter, r *http.Request) {
-	vars := getVars(r)
-	caseId := vars["caseId"]
+	caseId := getVar(r, "caseId")
 	prettySelector := getFields(r, "pretty")
 	queryFields := getFields(r, "fields")
 
@@ -90,8 +92,7 @@ func CassetteShow(w http.ResponseWriter, r *http.Request) {
 }
 
 func SlideShow(w http.ResponseWriter, r *http.Request) {
-	vars := getVars(r)
-	caseId := vars["caseId"]
+	caseId := getVar(r, "caseId")
 	prettySelector := getFields(r, "pretty")
 	queryFields := getFields(r, "fields")
 
