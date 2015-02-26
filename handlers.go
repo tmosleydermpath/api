@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -18,25 +17,12 @@ func handleError(w http.ResponseWriter, code int) {
 	JSONError(w, Error{codes[code], code}, code)
 
 }
-func getVars(r *http.Request) map[string]string {
-	return mux.Vars(r)
-}
-
-func getFields(r *http.Request, f string) string {
-	query := r.URL.Query()
-	return query.Get(f)
-}
-
-func getVar(r *http.Request, v string) string {
-	vars := getVars(r)
-	return vars[v]
-}
 
 func CaseShow(w http.ResponseWriter, r *http.Request) {
-	prettySelector := getFields(r, "pretty")
-	queryFields := getFields(r, "fields")
-	caseId := getVar(r, "caseId")
-	fields := sFields(queryFields)
+	prettyPrint := getPrettyPrintValue(r)
+	queryFields := getQueryFieldsValue(r)
+	caseId := getCaseIdVar(r)
+	fields := splitCommaFieldsToMap(queryFields)
 	if queryFields == "" {
 		fields = nil
 	}
@@ -59,16 +45,16 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	JSON(w, result, prettySelector, 200)
+	JSON(w, result, prettyPrint, 200)
 
 }
 
 func CassetteShow(w http.ResponseWriter, r *http.Request) {
-	caseId := getVar(r, "caseId")
-	prettySelector := getFields(r, "pretty")
-	queryFields := getFields(r, "fields")
+	caseId := getCaseIdVar(r)
+	prettyPrint := getPrettyPrintValue(r)
+	queryFields := getQueryFieldsValue(r)
 
-	fields := sFields(queryFields)
+	fields := splitCommaFieldsToMap(queryFields)
 	if queryFields == "" {
 		fields = nil
 	}
@@ -88,15 +74,15 @@ func CassetteShow(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	JSON(w, results, prettySelector, 200)
+	JSON(w, results, prettyPrint, 200)
 }
 
 func SlideShow(w http.ResponseWriter, r *http.Request) {
-	caseId := getVar(r, "caseId")
-	prettySelector := getFields(r, "pretty")
-	queryFields := getFields(r, "fields")
+	caseId := getCaseIdVar(r)
+	prettyPrint := getPrettyPrintValue(r)
+	queryFields := getQueryFieldsValue(r)
 
-	fields := sFields(queryFields)
+	fields := splitCommaFieldsToMap(queryFields)
 	if queryFields == "" {
 		fields = nil
 	}
@@ -116,18 +102,18 @@ func SlideShow(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	JSON(w, results, prettySelector, 200)
+	JSON(w, results, prettyPrint, 200)
 }
 func CaseIndex(w http.ResponseWriter, r *http.Request) {
-	prettySelector := getFields(r, "pretty")
-	queryFields := getFields(r, "fields")
-	filterFields := getFields(r, "filter")
-	sortFields := getFields(r, "sort")
+	prettyPrint := getPrettyPrintValue(r)
+	queryFields := getQueryFieldsValue(r)
+	filterFields := getFilterFields(r)
+	sortFields := getSortFields(r)
 	if sortFields == "" {
 		sortFields = " "
 	}
 
-	fields := sFields(queryFields)
+	fields := splitCommaFieldsToMap(queryFields)
 	if queryFields == "" {
 		fields = nil
 	}
@@ -152,5 +138,5 @@ func CaseIndex(w http.ResponseWriter, r *http.Request) {
 		handleError(w, 404)
 		return
 	}
-	JSON(w, results, prettySelector, 200)
+	JSON(w, results, prettyPrint, 200)
 }

@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -113,7 +114,7 @@ func splitFields(s string) (sf []string) {
 	sf = strings.Split(s, ",")
 	return sf
 }
-func sFields(s string) (m map[string]interface{}) {
+func splitCommaFieldsToMap(s string) (m map[string]interface{}) {
 	var qf []string
 	qf = strings.Split(s, ",")
 	if len(qf) != 0 {
@@ -166,4 +167,37 @@ func JsonIndent(v interface{}, s string) (rj []byte, err error) {
 		return rj, err
 	}
 	return rj, err
+}
+
+func getUrlVars(r *http.Request) map[string]string {
+	return mux.Vars(r)
+}
+
+func getFields(r *http.Request, f string) string {
+	query := r.URL.Query()
+	return query.Get(f)
+}
+
+func getVar(r *http.Request, v string) string {
+	vars := getUrlVars(r)
+	return vars[v]
+}
+
+func getPrettyPrintValue(r *http.Request) string {
+	return getFields(r, "pretty")
+}
+
+func getQueryFieldsValue(r *http.Request) string {
+	return getFields(r, "fields")
+}
+
+func getCaseIdVar(r *http.Request) string {
+	return getVar(r, "caseId")
+}
+
+func getFilterFields(r *http.Request) string {
+	return getFields(r, "filter")
+}
+func getSortFields(r *http.Request) string {
+	return getFields(r, "sort")
 }

@@ -60,7 +60,7 @@ func Logger(inner http.Handler, name string) http.Handler {
 		methodColor := colorForMethod(method)
 
 		log.Printf(
-			"%s| %s |%s\t%s\t|%s\t%s",
+			"%s| %s |%s\t%s\t%s\t%s",
 			methodColor, method, reset,
 			r.RequestURI,
 			name,
