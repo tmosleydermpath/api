@@ -12,8 +12,7 @@ const dbname = "DLCS"
 
 var db *mgo.Database
 
-func getSession() *mgo.Session {
-	//func init() {
+func init() {
 	// Connect to Mongo instance
 	session, err := mgo.Dial(MongoURI)
 
@@ -22,7 +21,5 @@ func getSession() *mgo.Session {
 		panic(err)
 	}
 
-	//db = session.DB(dbname)
-
-	return session.Clone()
+	db = session.DB(dbname)
 }

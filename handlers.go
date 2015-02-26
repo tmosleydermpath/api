@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -27,14 +26,7 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 		fields = nil
 	}
 
-	session := getSession()
-
-	defer session.Close()
-
-	session.SetMode(mgo.Monotonic, true)
-
-	//collection := session.DB("backend").C("DLCSCase")
-	collection := session.DB("DLCS").C("DLCSCase")
+	collection := db.C("DLCSCase")
 
 	result := Case{}
 
@@ -59,11 +51,7 @@ func CassetteShow(w http.ResponseWriter, r *http.Request) {
 		fields = nil
 	}
 
-	session := getSession()
-	defer session.Close()
-	session.SetMode(mgo.Monotonic, true)
-
-	collection := session.DB("DLCS").C("cassette")
+	collection := db.C("cassette")
 
 	var results []Cassette
 
@@ -87,11 +75,7 @@ func SlideShow(w http.ResponseWriter, r *http.Request) {
 		fields = nil
 	}
 
-	session := getSession()
-	defer session.Close()
-	session.SetMode(mgo.Monotonic, true)
-
-	collection := session.DB("DLCS").C("slide")
+	collection := db.C("slide")
 
 	var results []Slide
 
@@ -124,13 +108,7 @@ func CaseIndex(w http.ResponseWriter, r *http.Request) {
 		filter = stationSort(filterFields)
 	}
 
-	session := getSession()
-	defer session.Close()
-
-	session.SetMode(mgo.Monotonic, true)
-
-	//collection := session.DB("backend").C("DLCSCase")
-	collection := session.DB("DLCS").C("DLCSCase")
+	collection := db.C("DLCSCase")
 
 	var results []Case
 	err := collection.Find(filter).Sort(sortFields).Select(fields).All(&results)
