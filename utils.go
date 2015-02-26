@@ -195,6 +195,9 @@ func getCaseIdVar(r *http.Request) string {
 	return getVar(r, "caseId")
 }
 
+func getQRCodeVar(r *http.Request) string {
+	return getVar(r, "QRCode")
+}
 func getFilterFields(r *http.Request) string {
 	return getFields(r, "filter")
 }

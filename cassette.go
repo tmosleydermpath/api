@@ -42,4 +42,4 @@ func (b *Cassette) Indexes() []mgo.Index {
 	return []mgo.Index{index}
 }
 
-type Cassettes []Cassette
+type Cassettes []*Cassette

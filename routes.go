@@ -33,16 +33,34 @@ var routes = Routes{
 		CaseIndex,
 	},
 	Route{
-		"CassetteShow",
+		"CassetteIndex",
 		"GET",
 		`/cases/{caseId:[a-zA-Z0-9=\-\/]{14}}/cassettes`,
+		CassetteIndex,
+	},
+	Route{
+		"CassetteShow",
+		"GET",
+		`/cassettes/{QRCode:\w{10,14}}`,
 		CassetteShow,
 	},
-
 	Route{
 		"SlideShow",
 		"GET",
-		`/cases/{caseId:[a-zA-Z0-9=\-\/]{14}}/slides`,
+		`/slides/{QRCode:\w{10,14}}`,
 		SlideShow,
+	},
+
+	Route{
+		"SlideIndex",
+		"GET",
+		`/cases/{caseId:[a-zA-Z0-9=\-\/]{14}}/slides`,
+		SlideIndex,
+	},
+	Route{
+		"CatchAll",
+		"GET",
+		`/{path:.*}`,
+		Index,
 	},
 }

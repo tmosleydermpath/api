@@ -29,24 +29,77 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 
 	collection := db.C(cases.Collection())
 
-	result := Case{}
+	//result := Case{}
 
-	err := collection.Find(bson.M{"caseID": caseId}).Select(fields).One(&result)
+	err := collection.Find(bson.M{"caseID": caseId}).Select(fields).One(&cases)
 	if err != nil {
 		fmt.Printf("got an error finding a doc %s\n", err)
 		handleError(w, 404)
 		return
 	}
 
-	JSON(w, result, prettyPrint, 200)
+	JSON(w, cases, prettyPrint, 200)
 
 }
 
 func CassetteShow(w http.ResponseWriter, r *http.Request) {
 	cassettes := &Cassette{}
+	prettyPrint := getPrettyPrintValue(r)
+	queryFields := getQueryFieldsValue(r)
+	cassetteQRCode := getQRCodeVar(r)
+	fields := splitCommaFieldsToMap(queryFields)
+	if queryFields == "" {
+		fields = nil
+	}
+
+	collection := db.C(cassettes.Collection())
+
+	//result := Case{}
+
+	err := collection.Find(bson.M{"QRCode": cassetteQRCode}).Select(fields).One(&cassettes)
+	if err != nil {
+		fmt.Printf("got an error finding a doc %s\n", err)
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, cassettes, prettyPrint, 200)
+
+}
+
+func SlideShow(w http.ResponseWriter, r *http.Request) {
+	slides := &Slide{}
+	prettyPrint := getPrettyPrintValue(r)
+	queryFields := getQueryFieldsValue(r)
+	slideQRCode := getQRCodeVar(r)
+	fields := splitCommaFieldsToMap(queryFields)
+	if queryFields == "" {
+		fields = nil
+	}
+
+	collection := db.C(slides.Collection())
+
+	//result := Case{}
+
+	err := collection.Find(bson.M{"QRCode": slideQRCode}).Select(fields).One(&slides)
+	if err != nil {
+		fmt.Printf("got an error finding a doc %s\n", err)
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, slides, prettyPrint, 200)
+
+}
+func CassetteIndex(w http.ResponseWriter, r *http.Request) {
+	cassettes := &Cassette{}
 	caseId := getCaseIdVar(r)
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
+	sortFields := getSortFields(r)
+	if sortFields == "" {
+		sortFields = " "
+	}
 
 	fields := splitCommaFieldsToMap(queryFields)
 	if queryFields == "" {
@@ -57,7 +110,7 @@ func CassetteShow(w http.ResponseWriter, r *http.Request) {
 
 	var results []Cassette
 
-	err := collection.Find(bson.M{"caseID": caseId}).Select(fields).All(&results)
+	err := collection.Find(bson.M{"caseID": caseId}).Sort(sortFields).Select(fields).All(&results)
 	if err != nil {
 		fmt.Printf("got an error find cassette for %s\n", err)
 		handleError(w, 404)
@@ -67,11 +120,15 @@ func CassetteShow(w http.ResponseWriter, r *http.Request) {
 	JSON(w, results, prettyPrint, 200)
 }
 
-func SlideShow(w http.ResponseWriter, r *http.Request) {
+func SlideIndex(w http.ResponseWriter, r *http.Request) {
 	slides := &Slide{}
 	caseId := getCaseIdVar(r)
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
+	sortFields := getSortFields(r)
+	if sortFields == "" {
+		sortFields = " "
+	}
 
 	fields := splitCommaFieldsToMap(queryFields)
 	if queryFields == "" {
@@ -82,7 +139,7 @@ func SlideShow(w http.ResponseWriter, r *http.Request) {
 
 	var results []Slide
 
-	err := collection.Find(bson.M{"caseID": caseId}).Select(fields).All(&results)
+	err := collection.Find(bson.M{"caseID": caseId}).Sort(sortFields).Select(fields).All(&results)
 	if err != nil {
 		fmt.Printf("got an error finding slide for %s\n", err)
 		handleError(w, 404)
