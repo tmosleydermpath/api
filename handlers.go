@@ -18,6 +18,7 @@ func handleError(w http.ResponseWriter, code int) {
 }
 
 func CaseShow(w http.ResponseWriter, r *http.Request) {
+	cases := &Case{}
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
 	caseId := getCaseIdVar(r)
@@ -26,7 +27,7 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 		fields = nil
 	}
 
-	collection := db.C("DLCSCase")
+	collection := db.C(cases.Collection())
 
 	result := Case{}
 
@@ -42,6 +43,7 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 }
 
 func CassetteShow(w http.ResponseWriter, r *http.Request) {
+	cassettes := &Cassette{}
 	caseId := getCaseIdVar(r)
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
@@ -51,7 +53,7 @@ func CassetteShow(w http.ResponseWriter, r *http.Request) {
 		fields = nil
 	}
 
-	collection := db.C("cassette")
+	collection := db.C(cassettes.Collection())
 
 	var results []Cassette
 
@@ -66,6 +68,7 @@ func CassetteShow(w http.ResponseWriter, r *http.Request) {
 }
 
 func SlideShow(w http.ResponseWriter, r *http.Request) {
+	slides := &Slide{}
 	caseId := getCaseIdVar(r)
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
@@ -75,7 +78,7 @@ func SlideShow(w http.ResponseWriter, r *http.Request) {
 		fields = nil
 	}
 
-	collection := db.C("slide")
+	collection := db.C(slides.Collection())
 
 	var results []Slide
 
@@ -89,6 +92,7 @@ func SlideShow(w http.ResponseWriter, r *http.Request) {
 	JSON(w, results, prettyPrint, 200)
 }
 func CaseIndex(w http.ResponseWriter, r *http.Request) {
+	cases := &Case{}
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
 	filterFields := getFilterFields(r)
@@ -108,7 +112,7 @@ func CaseIndex(w http.ResponseWriter, r *http.Request) {
 		filter = stationSort(filterFields)
 	}
 
-	collection := db.C("DLCSCase")
+	collection := db.C(cases.Collection())
 
 	var results []Case
 	err := collection.Find(filter).Sort(sortFields).Select(fields).All(&results)
