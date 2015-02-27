@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -32,8 +33,7 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 	//result := Case{}
 
 	err := collection.Find(bson.M{"caseID": caseId}).Select(fields).One(&cases)
-	if err != nil {
-		fmt.Printf("got an error finding a doc %s\n", err)
+	if err == mgo.ErrNotFound {
 		handleError(w, 404)
 		return
 	}
@@ -46,7 +46,7 @@ func CassetteShow(w http.ResponseWriter, r *http.Request) {
 	cassettes := &Cassette{}
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
-	cassetteQRCode := getQRCodeVar(r)
+	qrCode := getQRCodeVar(r)
 	fields := splitCommaFieldsToMap(queryFields)
 	if queryFields == "" {
 		fields = nil
@@ -56,9 +56,8 @@ func CassetteShow(w http.ResponseWriter, r *http.Request) {
 
 	//result := Case{}
 
-	err := collection.Find(bson.M{"QRCode": cassetteQRCode}).Select(fields).One(&cassettes)
-	if err != nil {
-		fmt.Printf("got an error finding a doc %s\n", err)
+	err := collection.Find(bson.M{"QRCode": qrCode}).Select(fields).One(&cassettes)
+	if err == mgo.ErrNotFound {
 		handleError(w, 404)
 		return
 	}
@@ -71,7 +70,7 @@ func SlideShow(w http.ResponseWriter, r *http.Request) {
 	slides := &Slide{}
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
-	slideQRCode := getQRCodeVar(r)
+	qrCode := getQRCodeVar(r)
 	fields := splitCommaFieldsToMap(queryFields)
 	if queryFields == "" {
 		fields = nil
@@ -81,9 +80,8 @@ func SlideShow(w http.ResponseWriter, r *http.Request) {
 
 	//result := Case{}
 
-	err := collection.Find(bson.M{"QRCode": slideQRCode}).Select(fields).One(&slides)
-	if err != nil {
-		fmt.Printf("got an error finding a doc %s\n", err)
+	err := collection.Find(bson.M{"QRCode": qrCode}).Select(fields).One(&slides)
+	if err == mgo.ErrNotFound {
 		handleError(w, 404)
 		return
 	}

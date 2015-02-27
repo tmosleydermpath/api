@@ -1,0 +1,831 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is an API server to connect to the Cloud version of the Clearpath Suite\n\n",
+        "version": "1.0.0",
+        "title": "Clearpath Utility Suite",
+        "termsOfService": "http://dermpathlab.com",
+        "contact": {
+            "name": "tmosley@dermpathlab.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "host": "api.dlcscpth.com",
+    "basePath": "/v1",
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/cases": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "case"
+                ],
+                "summary": "Complete Case List",
+                "description": "The cases endpoint returns information for\nall cases in the system.\n",
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Allow sorting of results",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Chose fields to return",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "pretty",
+                        "in": "query",
+                        "description": "Toggle Pretty Print",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Filter based off configured filters",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation - An array of Cases",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Case"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/cases/{caseID}": {
+            "get": {
+                "tags": [
+                    "case"
+                ],
+                "summary": "Find case by using case ID",
+                "description": "Returns a case when caseID = 14 characters, all other characters will trigger error conditions",
+                "operationId": "CaseShow",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "caseID",
+                        "description": "ID of case that needs to be viewed",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Chose fields to return",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "pretty",
+                        "in": "query",
+                        "description": "Toggle Pretty Print",
+                        "required": false,
+                        "type": "boolean"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation",
+                        "schema": {
+                            "$ref": "#/definitions/Case"
+                        }
+                    },
+                    "404": {
+                        "description": "Case not found"
+                    }
+                }
+            }
+        },
+        "/cases/{caseID}/cassettes": {
+            "get": {
+                "tags": [
+                    "cassette"
+                ],
+                "summary": "Find all cassettes using case ID",
+                "description": "Returns an array of cassettes for the supplied case ID",
+                "operationId": "CassetteIndex",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "caseID",
+                        "description": "ID of the case that needs to be viewed",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Chose fields to return",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "pretty",
+                        "in": "query",
+                        "description": "Toggle Pretty Print",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort return data by fields",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Cassette"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cases/{caseID}/slides": {
+            "get": {
+                "tags": [
+                    "slide"
+                ],
+                "summary": "Find all slides using case ID",
+                "description": "Returns an array of slides for the supplied case ID",
+                "operationId": "SlideIndex",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "caseID",
+                        "description": "ID of the case that needs to be viewed",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Chose fields to return",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "pretty",
+                        "in": "query",
+                        "description": "Toggle Pretty Print",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort return data by fields",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Slide"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/slides/{slideQRCode}": {
+            "get": {
+                "tags": [
+                    "slide"
+                ],
+                "summary": "Find slide by using QRCode",
+                "description": "Returns a slide when QRCode is between 10 - 14 characters, all other characters will trigger error conditions",
+                "operationId": "SlideShow",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "slideQRCode",
+                        "description": "QRCode of the slide that needs to be viewed",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Chose fields to return",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "pretty",
+                        "in": "query",
+                        "description": "Toggle Pretty Print",
+                        "required": false,
+                        "type": "boolean"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation",
+                        "schema": {
+                            "$ref": "#/definitions/Slide"
+                        }
+                    },
+                    "404": {
+                        "description": "Slide not found"
+                    }
+                }
+            }
+        },
+        "/cassettes/{cassetteQRCode}": {
+            "get": {
+                "tags": [
+                    "cassette"
+                ],
+                "summary": "Find cassette by using QRCode",
+                "description": "Returns a cassette when QRCode is between 10 - 14 characters, all other characters will trigger error conditions",
+                "operationId": "CassetteShow",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "cassetteQRCode",
+                        "description": "QRCode of the slide that needs to be viewed",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Chose fields to return",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "pretty",
+                        "in": "query",
+                        "description": "Toggle Pretty Print",
+                        "required": false,
+                        "type": "boolean"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation",
+                        "schema": {
+                            "$ref": "#/definitions/Cassette"
+                        }
+                    },
+                    "404": {
+                        "description": "Cassette not found"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "DepartList": {
+            "properties": {
+                "Collection": {
+                    "type": "boolean"
+                },
+                "Grossing": {
+                    "type": "boolean"
+                },
+                "Tissue": {
+                    "type": "boolean"
+                },
+                "Embedding": {
+                    "type": "boolean"
+                },
+                "Cutting": {
+                    "type": "boolean"
+                },
+                "Digitalimage": {
+                    "type": "boolean"
+                },
+                "Diagnosis": {
+                    "type": "boolean"
+                },
+                "Slideprep": {
+                    "type": "boolean"
+                },
+                "Slidetrans": {
+                    "type": "boolean"
+                },
+                "Transcription": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "Patient": {
+            "properties": {
+                "MRN": {
+                    "type": "string"
+                },
+                "SSN": {
+                    "type": "string"
+                },
+                "AccountNum": {
+                    "type": "string"
+                },
+                "Birthdate": {
+                    "type": "string"
+                },
+                "First": {
+                    "type": "string"
+                },
+                "Last": {
+                    "type": "string"
+                },
+                "Middle": {
+                    "type": "string"
+                },
+                "Phone": {
+                    "type": "string"
+                },
+                "Race": {
+                    "type": "string"
+                },
+                "Sex": {
+                    "type": "string"
+                }
+            }
+        },
+        "Gross": {
+            "properties": {
+                "Account": {
+                    "type": "string"
+                },
+                "CutMethod": {
+                    "type": "string"
+                },
+                "Date": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Descript": {
+                    "type": "string"
+                },
+                "Dimension": {
+                    "type": "string"
+                },
+                "Term": {
+                    "type": "string"
+                }
+            }
+        },
+        "Collect": {
+            "properties": {
+                "Account": {
+                    "type": "string"
+                },
+                "Date": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "Specimens": {
+            "properties": {
+                "PAS": {
+                    "type": "boolean"
+                },
+                "QRCode": {
+                    "type": "string"
+                },
+                "SN": {
+                    "type": "string"
+                },
+                "AdditStain": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "AdditStainReq": {
+                    "type": "string"
+                },
+                "AnatomicText": {
+                    "type": "string"
+                },
+                "Cassette": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "Collect": {
+                    "$ref": "#/definitions/Collect"
+                },
+                "CompleDay": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "DepartList": {
+                    "$ref": "#/definitions/DepartList"
+                },
+                "DiffDiagText": {
+                    "type": "string"
+                },
+                "Gross": {
+                    "$ref": "#/definitions/Gross"
+                },
+                "GrossNote": {
+                    "type": "string"
+                },
+                "Hold": {
+                    "type": "boolean"
+                },
+                "Index": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "Margin": {
+                    "type": "boolean"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "PhistoryText": {
+                    "type": "string"
+                },
+                "Processing": {
+                    "type": "boolean"
+                },
+                "Recut": {
+                    "type": "boolean"
+                },
+                "Scanned": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "Slide": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "SlideSum": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "SourceCode": {
+                    "type": "string"
+                },
+                "Status": {
+                    "type": "string"
+                },
+                "Stop": {
+                    "type": "boolean"
+                },
+                "Type": {
+                    "type": "string"
+                }
+            }
+        },
+        "Insurance": {
+            "properties": {
+                "Type": {
+                    "type": "string"
+                }
+            }
+        },
+        "DisplayType": {
+            "properties": {
+                "S": {
+                    "$ref": "#/definitions/S"
+                }
+            }
+        },
+        "S": {
+            "properties": {
+                "B": {
+                    "type": "string"
+                },
+                "C": {
+                    "type": "string"
+                }
+            }
+        },
+        "Case": {
+            "properties": {
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "MOHS": {
+                    "type": "boolean"
+                },
+                "NY": {
+                    "type": "boolean"
+                },
+                "AccessioningCompleteTime": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "Account": {
+                    "type": "string"
+                },
+                "AssignDate": {
+                    "type": "string"
+                },
+                "AssignUser": {
+                    "type": "string"
+                },
+                "Billing": {
+                    "type": "string"
+                },
+                "BillingComplete": {
+                    "type": "boolean"
+                },
+                "BillingPending": {
+                    "type": "boolean"
+                },
+                "BiopsyDate": {
+                    "type": "string"
+                },
+                "CaseID": {
+                    "type": "string"
+                },
+                "CaseNote": {
+                    "type": "string"
+                },
+                "CaseType": {
+                    "type": "string"
+                },
+                "Clinic": {
+                    "type": "string"
+                },
+                "ClinicAccount": {
+                    "type": "string"
+                },
+                "ClinicName": {
+                    "type": "string"
+                },
+                "CompleDay": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "CompleDigi": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "CreateFrom": {
+                    "type": "string"
+                },
+                "Date": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "DepartList": {
+                    "$ref": "#/definitions/DepartList"
+                },
+                "DiagnoType": {
+                    "type": "string"
+                },
+                "DisplayType": {
+                    "$ref": "#/definitions/DisplayType"
+                },
+                "DiagnosisFirst": {
+                    "type": "boolean"
+                },
+                "DupSlide": {
+                    "type": "boolean"
+                },
+                "EndDEPT": {
+                    "type": "string"
+                },
+                "ExecuteDate": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "HaveRelate": {
+                    "type": "boolean"
+                },
+                "OrderFirst": {
+                    "type": "boolean"
+                },
+                "Patient": {
+                    "$ref": "#/definitions/Patient"
+                },
+                "PhysicianLock": {
+                    "type": "boolean"
+                },
+                "Problem": {
+                    "type": "boolean"
+                },
+                "RecutProcess": {
+                    "type": "boolean"
+                },
+                "RelateCases": {
+                    "type": "string"
+                },
+                "Rush": {
+                    "type": "boolean"
+                },
+                "RushReq": {
+                    "type": "string"
+                },
+                "SlidePrepCompleDay": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "Specimens": {
+                    "$ref": "#/definitions/Specimens"
+                },
+                "Status": {
+                    "type": "string"
+                },
+                "Insurance": {
+                    "$ref": "#/definitions/Insurance"
+                }
+            }
+        },
+        "Error": {
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "Cutting": {
+            "properties": {
+                "Account": {
+                    "type": "string"
+                },
+                "Date": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "Digital": {
+            "properties": {
+                "Account": {
+                    "type": "string"
+                },
+                "Date": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "DigitalID": {
+            "properties": {
+                "AppMag": {
+                    "type": "string"
+                },
+                "Date": {
+                    "type": "string"
+                },
+                "Desc": {
+                    "type": "string"
+                },
+                "Height": {
+                    "type": "string"
+                },
+                "SlideImageID": {
+                    "type": "string"
+                },
+                "Title": {
+                    "type": "string"
+                },
+                "Width": {
+                    "type": "string"
+                }
+            }
+        },
+        "Slide": {
+            "properties": {
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "QRCode": {
+                    "type": "string"
+                },
+                "SN": {
+                    "type": "string"
+                },
+                "CaseID": {
+                    "type": "string"
+                },
+                "Cassette": {
+                    "type": "string"
+                },
+                "Cutting": {
+                    "$ref": "#/definitions/Cutting"
+                },
+                "Digital": {
+                    "$ref": "#/definitions/Digital"
+                },
+                "DigitalID": {
+                    "$ref": "#/definitions/DigitalID"
+                },
+                "DupGroup": {
+                    "type": "string"
+                },
+                "Duplicate": {
+                    "type": "boolean"
+                },
+                "ReCut": {
+                    "type": "boolean"
+                },
+                "RecutComm": {
+                    "type": "string"
+                }
+            }
+        },
+        "Tissue": {
+            "properties": {
+                "Account": {
+                    "type": "string"
+                },
+                "Date": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "CasGross": {
+            "properties": {
+                "Account": {
+                    "type": "string"
+                },
+                "Date": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "Cassette": {
+            "properties": {
+                "QRCode": {
+                    "type": "string"
+                },
+                "SN": {
+                    "type": "string"
+                },
+                "CaseID": {
+                    "type": "string"
+                },
+                "Gross": {
+                    "$ref": "#/definitions/CasGross"
+                },
+                "Pieces": {
+                    "type": "string"
+                },
+                "Specimen": {
+                    "type": "string"
+                },
+                "Tissue": {
+                    "$ref": "#/definitions/Tissue"
+                }
+            }
+        }
+    }
+}
