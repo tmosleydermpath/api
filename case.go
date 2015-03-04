@@ -19,16 +19,16 @@ type DepartList struct {
 }
 
 type Patient struct {
-	MRN        string `bson:"MRN,omitempty" json:"MRN,omitempty"`
-	SSN        string `bson:"SSN,omitempty" json:"SSN,omitempty"`
-	AccountNum string `bson:"accountNum,omitempty" json:"accountNum,omitempty"`
-	Birthdate  string `bson:"birthdate,omitempty" json:"birthdate,omitempty"`
-	First      string `bson:"first,omitempty" json:"first,omitempty"`
-	Last       string `bson:"last,omitempty" json:"last,omitempty"`
-	Middle     string `bson:"middle,omitempty" json:"middle,omitempty"`
-	Phone      string `bson:"phone,omitempty" json:"phone,omitempty"`
-	Race       string `bson:"race,omitempty" json:"race,omitempty"`
-	Sex        string `bson:"sex,omitempty" json:"sex,omitempty"`
+	MRN        *string `bson:"MRN,omitempty" json:"MRN,omitempty"`
+	SSN        *string `bson:"SSN,omitempty" json:"SSN,omitempty"`
+	AccountNum *string `bson:"accountNum,omitempty" json:"accountNum,omitempty"`
+	Birthdate  *string `bson:"birthdate,omitempty" json:"birthdate,omitempty"`
+	First      *string `bson:"first,omitempty" json:"first,omitempty"`
+	Last       *string `bson:"last,omitempty" json:"last,omitempty"`
+	Middle     *string `bson:"middle,omitempty" json:"middle,omitempty"`
+	Phone      *string `bson:"phone,omitempty" json:"phone,omitempty"`
+	Race       *string `bson:"race,omitempty" json:"race,omitempty"`
+	Sex        *string `bson:"sex,omitempty" json:"sex,omitempty"`
 }
 type Case struct {
 	Id                       bson.ObjectId `bson:",omitempty" json:",omitempty"`

@@ -27,10 +27,28 @@ var routes = Routes{
 		CaseShow,
 	},
 	Route{
+		"CaseUpdate",
+		"PATCH",
+		`/cases/{caseId:[a-zA-Z0-9=\-\/]{14}}`,
+		CaseUpdate,
+	},
+	Route{
 		"CaseIndex",
 		"GET",
 		"/cases",
 		CaseIndex,
+	},
+	Route{
+		"CaseInsert",
+		"PUT",
+		"/cases",
+		CaseInsert,
+	},
+	Route{
+		"CaseDelete",
+		"DELETE",
+		`/cases/{caseId:[a-zA-Z0-9=\-\/]{14}}`,
+		CaseDelete,
 	},
 	Route{
 		"CassetteIndex",
@@ -39,10 +57,34 @@ var routes = Routes{
 		CassetteIndex,
 	},
 	Route{
+		"CassetteInsert",
+		"PUT",
+		"/cassettes",
+		CassetteInsert,
+	},
+	Route{
 		"CassetteShow",
 		"GET",
 		`/cassettes/{QRCode:\w{10,14}}`,
 		CassetteShow,
+	},
+	Route{
+		"CassetteUpdate",
+		"PATCH",
+		`/cassettes/{QRCode:\w{10,14}}`,
+		CassetteUpdate,
+	},
+	Route{
+		"CassetteDelete",
+		"DELETE",
+		`/cassettes/{QRCode:\w{10,14}}`,
+		CassetteDelete,
+	},
+	Route{
+		"SlideInsert",
+		"PUT",
+		"/slides",
+		SlideInsert,
 	},
 	Route{
 		"SlideShow",
@@ -50,7 +92,18 @@ var routes = Routes{
 		`/slides/{QRCode:\w{10,14}}`,
 		SlideShow,
 	},
-
+	Route{
+		"SlideUpdate",
+		"PATCH",
+		`/slides/{QRCode:\w{10,14}}`,
+		SlideUpdate,
+	},
+	Route{
+		"SlideDelete",
+		"DELETE",
+		`/slides/{QRCode:\w{10,14}}`,
+		SlideDelete,
+	},
 	Route{
 		"SlideIndex",
 		"GET",

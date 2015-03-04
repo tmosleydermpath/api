@@ -2,6 +2,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -42,6 +43,181 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func CaseDelete(w http.ResponseWriter, r *http.Request) {
+	cases := &Case{}
+	prettyPrint := getPrettyPrintValue(r)
+	caseId := getCaseIdVar(r)
+
+	collection := db.C(cases.Collection())
+
+	err := collection.Remove(bson.M{"caseID": caseId})
+	if err == mgo.ErrNotFound {
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, cases, prettyPrint, 200)
+
+}
+func CaseUpdate(w http.ResponseWriter, r *http.Request) {
+	cases := &Case{}
+	caseId := getCaseIdVar(r)
+	prettyPrint := getPrettyPrintValue(r)
+	collection := db.C(cases.Collection())
+
+	json.NewDecoder(r.Body).Decode(&cases)
+	//changeInfo := bson.M{&cases}
+	change := mgo.Change{
+		Update:    bson.M{"$set": &cases},
+		ReturnNew: true,
+	}
+
+	//result := Case{}
+
+	_, err := collection.Find(bson.M{"caseID": caseId}).Apply(change, &cases)
+	if err == mgo.ErrNotFound {
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, cases, prettyPrint, 200)
+
+}
+
+func CaseInsert(w http.ResponseWriter, r *http.Request) {
+	cases := &Case{}
+	prettyPrint := getPrettyPrintValue(r)
+	collection := db.C(cases.Collection())
+
+	json.NewDecoder(r.Body).Decode(&cases)
+
+	err := collection.Insert(&cases)
+	if err == mgo.ErrNotFound {
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, cases, prettyPrint, 200)
+
+}
+
+func CassetteUpdate(w http.ResponseWriter, r *http.Request) {
+	cassettes := &Cassette{}
+	qrCode := getQRCodeVar(r)
+	prettyPrint := getPrettyPrintValue(r)
+	collection := db.C(cassettes.Collection())
+
+	json.NewDecoder(r.Body).Decode(&cassettes)
+	//changeInfo := bson.M{&cases}
+	change := mgo.Change{
+		Update:    bson.M{"$set": &cassettes},
+		ReturnNew: true,
+	}
+
+	//result := Case{}
+
+	_, err := collection.Find(bson.M{"QRCode": qrCode}).Apply(change, &cassettes)
+	if err == mgo.ErrNotFound {
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, cassettes, prettyPrint, 200)
+
+}
+
+func CassetteInsert(w http.ResponseWriter, r *http.Request) {
+	cassettes := &Cassette{}
+	prettyPrint := getPrettyPrintValue(r)
+	collection := db.C(cassettes.Collection())
+
+	json.NewDecoder(r.Body).Decode(&cassettes)
+
+	err := collection.Insert(&cassettes)
+	if err == mgo.ErrNotFound {
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, cassettes, prettyPrint, 200)
+
+}
+
+func SlideUpdate(w http.ResponseWriter, r *http.Request) {
+	slides := &Slide{}
+	qrCode := getQRCodeVar(r)
+	prettyPrint := getPrettyPrintValue(r)
+	collection := db.C(slides.Collection())
+
+	json.NewDecoder(r.Body).Decode(&slides)
+	//changeInfo := bson.M{&cases}
+	change := mgo.Change{
+		Update:    bson.M{"$set": &slides},
+		ReturnNew: true,
+	}
+
+	//result := Case{}
+
+	_, err := collection.Find(bson.M{"QRCode": qrCode}).Apply(change, &slides)
+	if err == mgo.ErrNotFound {
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, slides, prettyPrint, 200)
+
+}
+
+func SlideInsert(w http.ResponseWriter, r *http.Request) {
+	slides := &Slide{}
+	prettyPrint := getPrettyPrintValue(r)
+	collection := db.C(slides.Collection())
+
+	json.NewDecoder(r.Body).Decode(&slides)
+
+	err := collection.Insert(&slides)
+	if err == mgo.ErrNotFound {
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, slides, prettyPrint, 200)
+
+}
+func CassetteDelete(w http.ResponseWriter, r *http.Request) {
+	cassettes := &Cassette{}
+	qrCode := getQRCodeVar(r)
+	prettyPrint := getPrettyPrintValue(r)
+	collection := db.C(cassettes.Collection())
+
+	json.NewDecoder(r.Body).Decode(&cassettes)
+
+	err := collection.Remove(bson.M{"QRCode": qrCode})
+	if err == mgo.ErrNotFound {
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, cassettes, prettyPrint, 200)
+
+}
+func SlideDelete(w http.ResponseWriter, r *http.Request) {
+	slides := &Slide{}
+	qrCode := getQRCodeVar(r)
+	prettyPrint := getPrettyPrintValue(r)
+	collection := db.C(slides.Collection())
+
+	json.NewDecoder(r.Body).Decode(&slides)
+
+	err := collection.Remove(bson.M{"QRCode": qrCode})
+	if err == mgo.ErrNotFound {
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, slides, prettyPrint, 200)
+
+}
 func CassetteShow(w http.ResponseWriter, r *http.Request) {
 	cassettes := &Cassette{}
 	prettyPrint := getPrettyPrintValue(r)

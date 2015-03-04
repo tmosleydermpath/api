@@ -8,7 +8,7 @@ const MongoURI = "10.30.178.203:27017/DLCS"
 //const MongoURI = "tmosley:BackendTest@ds059887.mongolab.com:59887/backend"
 //const dbname = "backend"
 
-const dbname = "DLCS"
+const dbname = "DLCS_test"
 
 var db *mgo.Database
 
