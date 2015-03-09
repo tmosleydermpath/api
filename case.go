@@ -77,37 +77,46 @@ type Case struct {
 }
 
 type Specimens []struct {
-	PAS           bool        `bson:"PAS,omitempty" json:"PAS,omitempty"`
-	QRCode        string      `bson:"QRCode,omitempty" json:"QRCode,omitempty"`
-	SN            string      `bson:"SN,omitempty" json:"SN,omitempty"`
-	AdditStain    int         `bson:"additStain,omitempty" json:"additStain,omitempty"`
-	AdditStainReq string      `bson:"additStainReq,omitempty" json:"additStainReq,omitempty"`
-	AntomicText   string      `bson:"anatomicText,omitempty" json:"anatomicText,omitempty"`
-	Cassette      int         `bson:"cassette,omitempty" json:"cassette,omitempty"`
-	Collect       *Collect    `bson:"collect,omitempty" json:"collect,omitempty"`
-	CompleDay     int         `bson:"compleDay,omitempty" json:"compleDay,omitempty"`
-	DepartList    *DepartList `bson:"departList,omitempty" json:"departList,omitempty"`
-	DiffDiagText  string      `bson:"diffDiagText,omitempty" json:"diffDiagText,omitempty"`
-	Gross         *Gross      `bson:"gross,omitempty" json:"gross,omitempty"`
-	GrossNote     string      `bson:"grossNote,omitempty" json:"grossNote,omitempty"`
-	Hold          bool        `bson:"hold,omitempty" json:"hold,omitempty"`
-	Index         int         `bson:"index,omitempty" json:"index,omitempty"`
-	Margin        bool        `bson:"margin,omitempty" json:"margin,omitempty"`
-	Name          string      `bson:"name,omitempty" json:"name,omitempty"`
-	PhistoryText  string      `bson:"phistoryText,omitempty" json:"phistoryText,omitempty"`
-	Processing    bool        `bson:"processing,omitempty" json:"processing,omitempty"`
-	Recut         bool        `bson:"recut,omitempty" json:"recut,omitempty"`
-	Scanned       int         `bson:"scanned,omitempty" json:"scanned,omitempty"`
-	Slide         int         `bson:"slide,omitempty" json:"slide,omitempty"`
-	SlideSum      int         `bson:"slideSum,omitempty" json:"slideSum,omitempty"`
-	SourceCode    string      `bson:"sourceCode,omitempty" json:"sourceCode,omitempty"`
-	Status        string      `bson:"status,omitempty" json:"status,omitempty"`
-	Stop          bool        `bson:"stop,omitempty" json:"stop,omitempty"`
-	Type          string      `bson:"type,omitempty" json:"type,omitempty"`
+	PAS             bool             `bson:"PAS,omitempty" json:"PAS,omitempty"`
+	QRCode          string           `bson:"QRCode,omitempty" json:"QRCode,omitempty"`
+	SN              string           `bson:"SN,omitempty" json:"SN,omitempty"`
+	AdditStain      int              `bson:"additStain,omitempty" json:"additStain,omitempty"`
+	AdditStainReq   string           `bson:"additStainReq,omitempty" json:"additStainReq,omitempty"`
+	AntomicText     string           `bson:"anatomicText,omitempty" json:"anatomicText,omitempty"`
+	Cassette        int              `bson:"cassette,omitempty" json:"cassette,omitempty"`
+	Collect         *Collect         `bson:"collect,omitempty" json:"collect,omitempty"`
+	CompleDay       int              `bson:"compleDay,omitempty" json:"compleDay,omitempty"`
+	DepartList      *DepartList      `bson:"departList,omitempty" json:"departList,omitempty"`
+	DiffDiagText    string           `bson:"diffDiagText,omitempty" json:"diffDiagText,omitempty"`
+	Gross           *Gross           `bson:"gross,omitempty" json:"gross,omitempty"`
+	GrossNote       string           `bson:"grossNote,omitempty" json:"grossNote,omitempty"`
+	Hold            bool             `bson:"hold,omitempty" json:"hold,omitempty"`
+	Index           int              `bson:"index,omitempty" json:"index,omitempty"`
+	Margin          bool             `bson:"margin,omitempty" json:"margin,omitempty"`
+	Name            string           `bson:"name,omitempty" json:"name,omitempty"`
+	PhistoryText    string           `bson:"phistoryText,omitempty" json:"phistoryText,omitempty"`
+	Processing      bool             `bson:"processing,omitempty" json:"processing,omitempty"`
+	Recut           bool             `bson:"recut,omitempty" json:"recut,omitempty"`
+	Scanned         int              `bson:"scanned,omitempty" json:"scanned,omitempty"`
+	Slide           int              `bson:"slide,omitempty" json:"slide,omitempty"`
+	SlidePrepDiagno *SlidePrepDiagno `bson:"slidePrepDiagno,omitempty" json:"slidePrepDiagno,omitempty"`
+	SlideSum        int              `bson:"slideSum,omitempty" json:"slideSum,omitempty"`
+	SourceCode      string           `bson:"sourceCode,omitempty" json:"sourceCode,omitempty"`
+	Status          string           `bson:"status,omitempty" json:"status,omitempty"`
+	Stop            bool             `bson:"stop,omitempty" json:"stop,omitempty"`
+	Type            string           `bson:"type,omitempty" json:"type,omitempty"`
 }
 
 type Insurance []struct {
 	Type string `bson:"type,omitempty" json:"type,omitempty"`
+}
+
+type SlidePrepDiagno struct {
+	Date  int    `bson:"date,omitempty" json:"date,omitempty"`
+	Diag  string `bson:"diag,omitempty" json:"diag,omitempty"`
+	Macro string `bson:"macro,omitempty" json:"macro,omitempty"`
+	Micro string `bson:"micro,omitempty" json:"micro,omitempty"`
+	Note  string `bson:"note,omitempty" json:"note,omitempty"`
 }
 
 type DisplayType struct {
@@ -126,8 +135,8 @@ type Gross struct {
 }
 
 type Collect struct {
-	Account string `bson:"account" json:"account"`
-	Date    int    `bson:"date" json:"date"`
+	Account string `bson:"account,omitempty" json:"account,omitempty"`
+	Date    int    `bson:"date,omitempty" json:"date,omitempty"`
 }
 
 func (c *Case) Collection() string {

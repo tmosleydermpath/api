@@ -10,6 +10,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+// Index Return 404 error when going to host root
 func Index(w http.ResponseWriter, r *http.Request) {
 	handleError(w, 404)
 }
@@ -19,11 +20,12 @@ func handleError(w http.ResponseWriter, code int) {
 
 }
 
+// CaseShow Return case detail information for individual case
 func CaseShow(w http.ResponseWriter, r *http.Request) {
 	cases := &Case{}
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
-	caseId := getCaseIdVar(r)
+	caseID := getCaseIdVar(r)
 	fields := splitCommaFieldsToMap(queryFields)
 	if queryFields == "" {
 		fields = nil
@@ -33,7 +35,7 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 
 	//result := Case{}
 
-	err := collection.Find(bson.M{"caseID": caseId}).Select(fields).One(&cases)
+	err := collection.Find(bson.M{"caseID": caseID}).Select(fields).One(&cases)
 	if err == mgo.ErrNotFound {
 		handleError(w, 404)
 		return
@@ -43,14 +45,15 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// CaseDelete Delete case detail
 func CaseDelete(w http.ResponseWriter, r *http.Request) {
 	cases := &Case{}
 	prettyPrint := getPrettyPrintValue(r)
-	caseId := getCaseIdVar(r)
+	caseID := getCaseIdVar(r)
 
 	collection := db.C(cases.Collection())
 
-	err := collection.Remove(bson.M{"caseID": caseId})
+	err := collection.Remove(bson.M{"caseID": caseID})
 	if err == mgo.ErrNotFound {
 		handleError(w, 404)
 		return
@@ -59,9 +62,11 @@ func CaseDelete(w http.ResponseWriter, r *http.Request) {
 	JSON(w, cases, prettyPrint, 200)
 
 }
+
+// CaseUpdate Update individual case details
 func CaseUpdate(w http.ResponseWriter, r *http.Request) {
 	cases := &Case{}
-	caseId := getCaseIdVar(r)
+	caseID := getCaseIdVar(r)
 	prettyPrint := getPrettyPrintValue(r)
 	collection := db.C(cases.Collection())
 
@@ -74,7 +79,7 @@ func CaseUpdate(w http.ResponseWriter, r *http.Request) {
 
 	//result := Case{}
 
-	_, err := collection.Find(bson.M{"caseID": caseId}).Apply(change, &cases)
+	_, err := collection.Find(bson.M{"caseID": caseID}).Apply(change, &cases)
 	if err == mgo.ErrNotFound {
 		handleError(w, 404)
 		return
@@ -84,6 +89,7 @@ func CaseUpdate(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// CaseInsert Insert new case detail for individual case
 func CaseInsert(w http.ResponseWriter, r *http.Request) {
 	cases := &Case{}
 	prettyPrint := getPrettyPrintValue(r)
@@ -101,6 +107,7 @@ func CaseInsert(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// CassetteUpdate Update cassette information for individual cassette
 func CassetteUpdate(w http.ResponseWriter, r *http.Request) {
 	cassettes := &Cassette{}
 	qrCode := getQRCodeVar(r)
@@ -126,6 +133,7 @@ func CassetteUpdate(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// CassetteInsert Insert new cassette information for individual cassette
 func CassetteInsert(w http.ResponseWriter, r *http.Request) {
 	cassettes := &Cassette{}
 	prettyPrint := getPrettyPrintValue(r)
@@ -143,6 +151,7 @@ func CassetteInsert(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// SlideUpdate Update information for individual slide
 func SlideUpdate(w http.ResponseWriter, r *http.Request) {
 	slides := &Slide{}
 	qrCode := getQRCodeVar(r)
@@ -168,6 +177,7 @@ func SlideUpdate(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// SlideInsert Insert new information for individual slide
 func SlideInsert(w http.ResponseWriter, r *http.Request) {
 	slides := &Slide{}
 	prettyPrint := getPrettyPrintValue(r)
@@ -184,6 +194,8 @@ func SlideInsert(w http.ResponseWriter, r *http.Request) {
 	JSON(w, slides, prettyPrint, 200)
 
 }
+
+// CassetteDelete Delete information for individual cassette
 func CassetteDelete(w http.ResponseWriter, r *http.Request) {
 	cassettes := &Cassette{}
 	qrCode := getQRCodeVar(r)
@@ -201,6 +213,8 @@ func CassetteDelete(w http.ResponseWriter, r *http.Request) {
 	JSON(w, cassettes, prettyPrint, 200)
 
 }
+
+// SlideDelete Delete information for individual slide
 func SlideDelete(w http.ResponseWriter, r *http.Request) {
 	slides := &Slide{}
 	qrCode := getQRCodeVar(r)
@@ -218,6 +232,8 @@ func SlideDelete(w http.ResponseWriter, r *http.Request) {
 	JSON(w, slides, prettyPrint, 200)
 
 }
+
+// CassetteShow Return information for individual cassette
 func CassetteShow(w http.ResponseWriter, r *http.Request) {
 	cassettes := &Cassette{}
 	prettyPrint := getPrettyPrintValue(r)
@@ -242,6 +258,7 @@ func CassetteShow(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// SlideShow Return slide information for individual slide
 func SlideShow(w http.ResponseWriter, r *http.Request) {
 	slides := &Slide{}
 	prettyPrint := getPrettyPrintValue(r)
@@ -265,9 +282,11 @@ func SlideShow(w http.ResponseWriter, r *http.Request) {
 	JSON(w, slides, prettyPrint, 200)
 
 }
+
+// CassetteIndex Return all cassette information for specific case
 func CassetteIndex(w http.ResponseWriter, r *http.Request) {
 	cassettes := &Cassette{}
-	caseId := getCaseIdVar(r)
+	caseID := getCaseIdVar(r)
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
 	sortFields := getSortFields(r)
@@ -284,7 +303,7 @@ func CassetteIndex(w http.ResponseWriter, r *http.Request) {
 
 	var results []Cassette
 
-	err := collection.Find(bson.M{"caseID": caseId}).Sort(sortFields).Select(fields).All(&results)
+	err := collection.Find(bson.M{"caseID": caseID}).Sort(sortFields).Select(fields).All(&results)
 	if err != nil {
 		fmt.Printf("got an error find cassette for %s\n", err)
 		handleError(w, 404)
@@ -294,9 +313,10 @@ func CassetteIndex(w http.ResponseWriter, r *http.Request) {
 	JSON(w, results, prettyPrint, 200)
 }
 
+// SlideIndex Return all slide information for specific case
 func SlideIndex(w http.ResponseWriter, r *http.Request) {
 	slides := &Slide{}
-	caseId := getCaseIdVar(r)
+	caseID := getCaseIdVar(r)
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
 	sortFields := getSortFields(r)
@@ -313,7 +333,7 @@ func SlideIndex(w http.ResponseWriter, r *http.Request) {
 
 	var results []Slide
 
-	err := collection.Find(bson.M{"caseID": caseId}).Sort(sortFields).Select(fields).All(&results)
+	err := collection.Find(bson.M{"caseID": caseID}).Sort(sortFields).Select(fields).All(&results)
 	if err != nil {
 		fmt.Printf("got an error finding slide for %s\n", err)
 		handleError(w, 404)
@@ -322,6 +342,8 @@ func SlideIndex(w http.ResponseWriter, r *http.Request) {
 
 	JSON(w, results, prettyPrint, 200)
 }
+
+// CaseIndex Return case detail information for all cases
 func CaseIndex(w http.ResponseWriter, r *http.Request) {
 	cases := &Case{}
 	prettyPrint := getPrettyPrintValue(r)
