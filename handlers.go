@@ -99,7 +99,7 @@ func CaseInsert(w http.ResponseWriter, r *http.Request) {
 
 	err := collection.Insert(&cases)
 	if err == mgo.ErrNotFound {
-		handleError(w, 404)
+		handleError(w, 405)
 		return
 	}
 

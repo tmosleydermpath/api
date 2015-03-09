@@ -76,6 +76,36 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "case"
+                ],
+                "summary": "Insert new case",
+                "description": "Insert a new case",
+                "operationId": "CaseInsert",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Case object that needs to be created",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Case"
+                        }
+                    }
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
             }
         },
         "/cases/{caseID}": {
@@ -121,6 +151,68 @@
                     },
                     "404": {
                         "description": "Case not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "case"
+                ],
+                "summary": "Delete case by using case ID",
+                "description": "Delete a case when case ID is provided",
+                "operationId": "CaseDelete",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "caseID",
+                        "description": "ID of case that needs to be deleted",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Case not found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "case"
+                ],
+                "summary": "Update existing case",
+                "description": "Update existing case",
+                "operationId": "CaseUpdate",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "caseID",
+                        "description": "ID of case that needs to be updated",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Case object that needs to be updated",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Case"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Not found"
                     }
                 }
             }
@@ -233,6 +325,38 @@
                 }
             }
         },
+        "/slides": {
+            "post": {
+                "tags": [
+                    "slide"
+                ],
+                "summary": "Insert new slide",
+                "description": "Insert a new slide",
+                "operationId": "SlideInsert",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Slide object that needs to be created",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Slide"
+                        }
+                    }
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
         "/slides/{slideQRCode}": {
             "get": {
                 "tags": [
@@ -276,6 +400,100 @@
                     },
                     "404": {
                         "description": "Slide not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "slide"
+                ],
+                "summary": "Delete slide by using slide QR code",
+                "description": "Delete a slide when QR code is provided",
+                "operationId": "SlideDelete",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "slideQRCode",
+                        "description": "QRCode of slide that needs to be deleted",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Slide not found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "slide"
+                ],
+                "summary": "Update existing slide",
+                "description": "Update existing slide",
+                "operationId": "SlideUpdate",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "slideQRCode",
+                        "description": "QRCode of slide that needs to be updated",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Slide object that needs to be updated",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Slide"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/cassettes": {
+            "post": {
+                "tags": [
+                    "cassette"
+                ],
+                "summary": "Insert new cassette",
+                "description": "Insert a new cassette",
+                "operationId": "CassetteInsert",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Cassette object that needs to be created",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Cassette"
+                        }
+                    }
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
                     }
                 }
             }
@@ -323,6 +541,68 @@
                     },
                     "404": {
                         "description": "Cassette not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "cassette"
+                ],
+                "summary": "Delete cassette by using cassette QR code",
+                "description": "Delete a cassette when QR code is provided",
+                "operationId": "CassetteDelete",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "cassetteQRCode",
+                        "description": "QRCode of cassette that needs to be deleted",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Cassette not found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "cassette"
+                ],
+                "summary": "Update existing cassette",
+                "description": "Update existing cassette",
+                "operationId": "CassetteUpdate",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "cassetteQRCode",
+                        "description": "QRCode of cassette that needs to be deleted",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Cassette object that needs to be updated",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Cassette"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Not found"
                     }
                 }
             }

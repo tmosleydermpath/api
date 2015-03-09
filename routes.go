@@ -40,7 +40,7 @@ var routes = Routes{
 	},
 	Route{
 		"CaseInsert",
-		"PUT",
+		"POST",
 		"/cases",
 		CaseInsert,
 	},
@@ -58,7 +58,7 @@ var routes = Routes{
 	},
 	Route{
 		"CassetteInsert",
-		"PUT",
+		"POST",
 		"/cassettes",
 		CassetteInsert,
 	},
@@ -82,7 +82,7 @@ var routes = Routes{
 	},
 	Route{
 		"SlideInsert",
-		"PUT",
+		"POST",
 		"/slides",
 		SlideInsert,
 	},
