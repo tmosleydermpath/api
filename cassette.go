@@ -5,6 +5,10 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+type CassetteRepository interface {
+	Store(cassettes Cassette)
+	FindById(qrCode string) Cassette
+}
 type Cassette struct {
 	Id        bson.ObjectId `bson:",omitempty" json:",omitempty"`
 	QRCode    string        `bson:"QRCode,omitempty" json:"QRCode,omitempty"`

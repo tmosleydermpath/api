@@ -5,6 +5,11 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+type CaseRepository interface {
+	Store(cases Case)
+	FindById(caseID string) Case
+}
+
 type DepartList struct {
 	Collection    bool `bson:"Collection,omitempty" json:"Collection,omitempty"`
 	Cutting       bool `bson:"Cutting,omitempty" json:"Cutting,omitempty"`
@@ -120,9 +125,12 @@ type SlidePrepDiagno struct {
 }
 
 type DisplayType struct {
+	R string `bson:"R,omitempty" json:"R,omitempty"`
 	S struct {
+		A string `bson:"A,omitempty" json:"A,omitempty"`
 		B string `bson:"B,omitempty" json:"B,omitempty"`
 		C string `bson:"C,omitempty" json:"C,omitempty"`
+		//Extra bson.M `bson:",inline"`
 	}
 }
 type Gross struct {

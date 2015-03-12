@@ -5,6 +5,10 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+type SlideRepository interface {
+	Store(slides Slide)
+	FindById(qrCode string)
+}
 type Slide struct {
 	Id        bson.ObjectId `bson:",omitempty" json:",omitempty"`
 	QRCode    string        `bson:"QRCode,omitempty" json:"QRCode,omitempty"`
