@@ -15,6 +15,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	handleError(w, 404)
 }
 
+// handleError Receive error codes and display them
 func handleError(w http.ResponseWriter, code int) {
 	JSONError(w, Error{codes[code], code}, code)
 
@@ -32,8 +33,6 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 	}
 
 	collection := db.C(cases.Collection())
-
-	//result := Case{}
 
 	err := collection.Find(bson.M{"caseID": caseID}).Select(fields).One(&cases)
 	if err == mgo.ErrNotFound {
@@ -71,13 +70,10 @@ func CaseUpdate(w http.ResponseWriter, r *http.Request) {
 	collection := db.C(cases.Collection())
 
 	json.NewDecoder(r.Body).Decode(&cases)
-	//changeInfo := bson.M{&cases}
 	change := mgo.Change{
 		Update:    bson.M{"$set": &cases},
 		ReturnNew: true,
 	}
-
-	//result := Case{}
 
 	_, err := collection.Find(bson.M{"caseID": caseID}).Apply(change, &cases)
 	if err == mgo.ErrNotFound {
@@ -115,13 +111,10 @@ func CassetteUpdate(w http.ResponseWriter, r *http.Request) {
 	collection := db.C(cassettes.Collection())
 
 	json.NewDecoder(r.Body).Decode(&cassettes)
-	//changeInfo := bson.M{&cases}
 	change := mgo.Change{
 		Update:    bson.M{"$set": &cassettes},
 		ReturnNew: true,
 	}
-
-	//result := Case{}
 
 	_, err := collection.Find(bson.M{"QRCode": qrCode}).Apply(change, &cassettes)
 	if err == mgo.ErrNotFound {
@@ -159,13 +152,10 @@ func SlideUpdate(w http.ResponseWriter, r *http.Request) {
 	collection := db.C(slides.Collection())
 
 	json.NewDecoder(r.Body).Decode(&slides)
-	//changeInfo := bson.M{&cases}
 	change := mgo.Change{
 		Update:    bson.M{"$set": &slides},
 		ReturnNew: true,
 	}
-
-	//result := Case{}
 
 	_, err := collection.Find(bson.M{"QRCode": qrCode}).Apply(change, &slides)
 	if err == mgo.ErrNotFound {
@@ -246,8 +236,6 @@ func CassetteShow(w http.ResponseWriter, r *http.Request) {
 
 	collection := db.C(cassettes.Collection())
 
-	//result := Case{}
-
 	err := collection.Find(bson.M{"QRCode": qrCode}).Select(fields).One(&cassettes)
 	if err == mgo.ErrNotFound {
 		handleError(w, 404)
@@ -270,8 +258,6 @@ func SlideShow(w http.ResponseWriter, r *http.Request) {
 	}
 
 	collection := db.C(slides.Collection())
-
-	//result := Case{}
 
 	err := collection.Find(bson.M{"QRCode": qrCode}).Select(fields).One(&slides)
 	if err == mgo.ErrNotFound {
