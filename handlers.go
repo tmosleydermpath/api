@@ -269,6 +269,29 @@ func SlideShow(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// AccountShow Return account information for individual account
+func AccountShow(w http.ResponseWriter, r *http.Request) {
+	accounts := &Account{}
+	prettyPrint := getPrettyPrintValue(r)
+	queryFields := getQueryFieldsValue(r)
+	accountName := getAccountVar(r)
+	fields := splitCommaFieldsToMap(queryFields)
+	if queryFields == "" {
+		fields = nil
+	}
+
+	collection := db.C(accounts.Collection())
+
+	err := collection.Find(bson.M{"account": accountName}).Select(fields).One(&accounts)
+	if err == mgo.ErrNotFound {
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, accounts, prettyPrint, 200)
+
+}
+
 // CassetteIndex Return all cassette information for specific case
 func CassetteIndex(w http.ResponseWriter, r *http.Request) {
 	cassettes := &Cassette{}
@@ -322,6 +345,66 @@ func SlideIndex(w http.ResponseWriter, r *http.Request) {
 	err := collection.Find(bson.M{"caseID": caseID}).Sort(sortFields).Select(fields).All(&results)
 	if err != nil {
 		fmt.Printf("got an error finding slide for %s\n", err)
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, results, prettyPrint, 200)
+}
+
+// CodeIndex Return all slide information for specific case
+func CodeIndex(w http.ResponseWriter, r *http.Request) {
+	codes := &Code{}
+	prettyPrint := getPrettyPrintValue(r)
+	queryFields := getQueryFieldsValue(r)
+	sortFields := getSortFields(r)
+	if sortFields == "" {
+		sortFields = " "
+	}
+
+	fields := splitCommaFieldsToMap(queryFields)
+	if queryFields == "" {
+		fields = nil
+	}
+	var filter = bson.M{}
+
+	collection := db.C(codes.Collection())
+
+	var results []Code
+
+	err := collection.Find(filter).Sort(sortFields).Select(fields).All(&results)
+	if err != nil {
+		fmt.Printf("got an error finding code for %s\n", err)
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, results, prettyPrint, 200)
+}
+
+// AccountIndex Return all account information
+func AccountIndex(w http.ResponseWriter, r *http.Request) {
+	accounts := &Account{}
+	prettyPrint := getPrettyPrintValue(r)
+	queryFields := getQueryFieldsValue(r)
+	sortFields := getSortFields(r)
+	if sortFields == "" {
+		sortFields = " "
+	}
+
+	fields := splitCommaFieldsToMap(queryFields)
+	if queryFields == "" {
+		fields = nil
+	}
+	var filter = bson.M{}
+
+	collection := db.C(accounts.Collection())
+
+	var results []Account
+
+	err := collection.Find(filter).Sort(sortFields).Select(fields).All(&results)
+	if err != nil {
+		fmt.Printf("got an error finding account for %s\n", err)
 		handleError(w, 404)
 		return
 	}

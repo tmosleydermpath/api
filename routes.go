@@ -39,6 +39,24 @@ var routes = Routes{
 		CaseIndex,
 	},
 	Route{
+		"CodeIndex",
+		"GET",
+		"/codes",
+		CodeIndex,
+	},
+	Route{
+		"AccountIndex",
+		"GET",
+		"/accounts",
+		AccountIndex,
+	},
+	Route{
+		"AccountShow",
+		"GET",
+		`/accounts/{account}`,
+		AccountShow,
+	},
+	Route{
 		"CaseInsert",
 		"POST",
 		"/cases",

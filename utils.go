@@ -194,9 +194,15 @@ func getQueryFieldsValue(r *http.Request) string {
 func getCaseIdVar(r *http.Request) string {
 	return getVar(r, "caseId")
 }
+func getCodeIdVar(r *http.Request) string {
+	return getVar(r, "codeId")
+}
 
 func getQRCodeVar(r *http.Request) string {
 	return getVar(r, "QRCode")
+}
+func getAccountVar(r *http.Request) string {
+	return getVar(r, "account")
 }
 func getFilterFields(r *http.Request) string {
 	return getFields(r, "filter")
