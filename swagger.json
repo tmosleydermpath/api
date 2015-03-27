@@ -108,6 +108,124 @@
                 }
             }
         },
+        "/codes": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "code"
+                ],
+                "summary": "Diagnostic, Micro and Note Code List",
+                "description": "The codes endpoint returns information for\nall codes in the system.\n",
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Allow sorting of results",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Chose fields to return",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "pretty",
+                        "in": "query",
+                        "description": "Toggle Pretty Print",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Filter based off configured filters",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation - An array of Codes",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Code"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/accounts": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "account"
+                ],
+                "summary": "Account List",
+                "description": "The account endpoint returns information for\nall accounts in the system.\n",
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Allow sorting of results",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "Chose fields to return",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "pretty",
+                        "in": "query",
+                        "description": "Toggle Pretty Print",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Filter based off configured filters",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation - An array of Accounts",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Account"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
         "/cases/{caseID}": {
             "get": {
                 "tags": [
@@ -1104,6 +1222,179 @@
                 },
                 "Tissue": {
                     "$ref": "#/definitions/Tissue"
+                }
+            }
+        },
+        "Code": {
+            "properties": {
+                "Code": {
+                    "type": "string"
+                },
+                "Desc": {
+                    "type": "string"
+                },
+                "Status": {
+                    "type": "string"
+                },
+                "Text": {
+                    "type": "string"
+                },
+                "Type": {
+                    "type": "string"
+                }
+            }
+        },
+        "Diagnosis": {
+            "properties": {
+                "Desc": {
+                    "type": "string"
+                },
+                "Diag": {
+                    "type": "string"
+                },
+                "ID": {
+                    "type": "string"
+                },
+                "Micro": {
+                    "type": "string"
+                }
+            }
+        },
+        "Account": {
+            "properties": {
+                "DragonDetection": {
+                    "type": "boolean"
+                },
+                "NPI": {
+                    "type": "string"
+                },
+                "Account": {
+                    "type": "string"
+                },
+                "Addr1": {
+                    "type": "string"
+                },
+                "Addr2": {
+                    "type": "string"
+                },
+                "Aetna": {
+                    "type": "string"
+                },
+                "AssignLimit": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "City": {
+                    "type": "string"
+                },
+                "Code": {
+                    "type": "string"
+                },
+                "Degree": {
+                    "type": "string"
+                },
+                "Delay": {
+                    "type": "string"
+                },
+                "DelayDate": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "DiagnoType": {
+                    "type": "string"
+                },
+                "Diagnosis": {
+                    "$ref": "#/definitions/Diagnosis"
+                },
+                "DigitalLimit": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "Email": {
+                    "type": "string"
+                },
+                "Enable": {
+                    "type": "boolean"
+                },
+                "First": {
+                    "type": "string"
+                },
+                "FirstAcc": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "GetComplete": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "GlassLimit": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "Last": {
+                    "type": "string"
+                },
+                "LastAcc": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "LastAssign": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "Lock": {
+                    "type": "boolean"
+                },
+                "LoginCount": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "MediaCare": {
+                    "type": "boolean"
+                },
+                "Middle": {
+                    "type": "string"
+                },
+                "Mobile": {
+                    "type": "string"
+                },
+                "Olsen": {
+                    "type": "boolean"
+                },
+                "Password": {
+                    "type": "string"
+                },
+                "Phone": {
+                    "type": "string"
+                },
+                "Pic": {
+                    "type": "string"
+                },
+                "PracticeName": {
+                    "type": "string"
+                },
+                "RePwDate": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "ResetPW": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "State": {
+                    "type": "string"
+                },
+                "Type": {
+                    "type": "string"
+                },
+                "UserCode": {
+                    "type": "string"
+                },
+                "Website": {
+                    "type": "string"
+                },
+                "Zip": {
+                    "type": "string"
                 }
             }
         }
