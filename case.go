@@ -11,16 +11,16 @@ type CaseRepository interface {
 }
 
 type DepartList struct {
-	Collection    bool `bson:"Collection,omitempty" json:"Collection,omitempty"`
-	Cutting       bool `bson:"Cutting,omitempty" json:"Cutting,omitempty"`
-	Diagnosis     bool `bson:"Diagnosis,omitempty" json:"Diagnosis,omitempty"`
-	DigitalImage  bool `bson:"DigitalImage,omitempty" json:"DigitalImage,omitempty"`
-	Embedding     bool `bson:"Embedding,omitempty" json:"Embedding,omitempty"`
-	Grossing      bool `bson:"Grossing,omitempty" json:"Grossing,omitempty"`
-	Slideprep     bool `bson:"SlidePrep,omitempty" json:"SlidePrep,omitempty"`
-	Slidetrans    bool `bson:"SlideTrans,omitempty" json:"SlideTrans,omitempty"`
-	Tissue        bool `bson:"Tissue,omitempty" json:"Tissue,omitempty"`
-	Transcription bool `bson:"Transcription,omitempty" json:"Transcription,omitempty"`
+	Collection    bool `bson:"Collection" json:"Collection"`
+	Cutting       bool `bson:"Cutting" json:"Cutting"`
+	Diagnosis     bool `bson:"Diagnosis" json:"Diagnosis"`
+	DigitalImage  bool `bson:"DigitalImage" json:"DigitalImage"`
+	Embedding     bool `bson:"Embedding" json:"Embedding"`
+	Grossing      bool `bson:"Grossing" json:"Grossing"`
+	Slideprep     bool `bson:"SlidePrep" json:"SlidePrep"`
+	Slidetrans    bool `bson:"SlideTrans" json:"SlideTrans"`
+	Tissue        bool `bson:"Tissue" json:"Tissue"`
+	Transcription bool `bson:"Transcription" json:"Transcription"`
 }
 
 type Patient struct {

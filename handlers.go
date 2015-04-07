@@ -44,21 +44,33 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// CaseDelete Delete case detail
-func CaseDelete(w http.ResponseWriter, r *http.Request) {
+// SpecimenShow Return case detail information for individual case
+func SpecimenShow(w http.ResponseWriter, r *http.Request) {
 	cases := &Case{}
 	prettyPrint := getPrettyPrintValue(r)
-	caseID := getCaseIdVar(r)
+	qrCode := getQRCodeVar(r)
 
 	collection := db.C(cases.Collection())
 
-	err := collection.Remove(bson.M{"caseID": caseID})
+	err := collection.Find(bson.M{"specimens.QRCode": qrCode}).Select(bson.M{"specimens": bson.M{"$elemMatch": bson.M{"QRCode": qrCode}}}).One(&cases)
 	if err == mgo.ErrNotFound {
 		handleError(w, 404)
 		return
 	}
 
 	JSON(w, cases, prettyPrint, 200)
+
+}
+
+// CaseDelete Delete case detail
+func CaseDelete(w http.ResponseWriter, r *http.Request) {
+	caseID := getCaseIdVar(r)
+
+	err := Delete(&Case{CaseID: caseID})
+	if err == mgo.ErrNotFound {
+		handleError(w, 404)
+		return
+	}
 
 }
 
@@ -187,40 +199,22 @@ func SlideInsert(w http.ResponseWriter, r *http.Request) {
 
 // CassetteDelete Delete information for individual cassette
 func CassetteDelete(w http.ResponseWriter, r *http.Request) {
-	cassettes := &Cassette{}
 	qrCode := getQRCodeVar(r)
-	prettyPrint := getPrettyPrintValue(r)
-	collection := db.C(cassettes.Collection())
-
-	json.NewDecoder(r.Body).Decode(&cassettes)
-
-	err := collection.Remove(bson.M{"QRCode": qrCode})
+	err := Delete(&Cassette{QRCode: qrCode})
 	if err == mgo.ErrNotFound {
 		handleError(w, 404)
 		return
 	}
-
-	JSON(w, cassettes, prettyPrint, 200)
-
 }
 
 // SlideDelete Delete information for individual slide
 func SlideDelete(w http.ResponseWriter, r *http.Request) {
-	slides := &Slide{}
 	qrCode := getQRCodeVar(r)
-	prettyPrint := getPrettyPrintValue(r)
-	collection := db.C(slides.Collection())
-
-	json.NewDecoder(r.Body).Decode(&slides)
-
-	err := collection.Remove(bson.M{"QRCode": qrCode})
+	err := Delete(&Slide{QRCode: qrCode})
 	if err == mgo.ErrNotFound {
 		handleError(w, 404)
 		return
 	}
-
-	JSON(w, slides, prettyPrint, 200)
-
 }
 
 // CassetteShow Return information for individual cassette
@@ -307,14 +301,40 @@ func CassetteIndex(w http.ResponseWriter, r *http.Request) {
 	if queryFields == "" {
 		fields = nil
 	}
-
 	collection := db.C(cassettes.Collection())
 
 	var results []Cassette
 
 	err := collection.Find(bson.M{"caseID": caseID}).Sort(sortFields).Select(fields).All(&results)
+
 	if err != nil {
 		fmt.Printf("got an error find cassette for %s\n", err)
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, results, prettyPrint, 200)
+}
+
+// SpecimenIndex Return all cassette information for specific case
+func SpecimenIndex(w http.ResponseWriter, r *http.Request) {
+	cases := &Case{}
+	caseID := getCaseIdVar(r)
+	prettyPrint := getPrettyPrintValue(r)
+	sortFields := getSortFields(r)
+	if sortFields == "" {
+		sortFields = " "
+	}
+
+	collection := db.C(cases.Collection())
+
+	var results []Case
+
+	//err := All(cases).Sort(sortFields).Select(bson.M{"specimens": 1}).All(&results)
+
+	err := collection.Find(bson.M{"caseID": caseID}).Sort(sortFields).Select(bson.M{"specimens": 1}).All(&results)
+	if err != nil {
+		fmt.Printf("got an error finding specimen for %s\n", err)
 		handleError(w, 404)
 		return
 	}
@@ -341,7 +361,6 @@ func SlideIndex(w http.ResponseWriter, r *http.Request) {
 	collection := db.C(slides.Collection())
 
 	var results []Slide
-
 	err := collection.Find(bson.M{"caseID": caseID}).Sort(sortFields).Select(fields).All(&results)
 	if err != nil {
 		fmt.Printf("got an error finding slide for %s\n", err)
@@ -366,13 +385,10 @@ func CodeIndex(w http.ResponseWriter, r *http.Request) {
 	if queryFields == "" {
 		fields = nil
 	}
-	var filter = bson.M{}
-
-	collection := db.C(codes.Collection())
 
 	var results []Code
 
-	err := collection.Find(filter).Sort(sortFields).Select(fields).All(&results)
+	err := All(codes).Sort(sortFields).Select(fields).All(&results)
 	if err != nil {
 		fmt.Printf("got an error finding code for %s\n", err)
 		handleError(w, 404)
@@ -396,13 +412,10 @@ func AccountIndex(w http.ResponseWriter, r *http.Request) {
 	if queryFields == "" {
 		fields = nil
 	}
-	var filter = bson.M{}
-
-	collection := db.C(accounts.Collection())
 
 	var results []Account
 
-	err := collection.Find(filter).Sort(sortFields).Select(fields).All(&results)
+	err := All(accounts).Sort(sortFields).Select(fields).All(&results)
 	if err != nil {
 		fmt.Printf("got an error finding account for %s\n", err)
 		handleError(w, 404)

@@ -27,6 +27,12 @@ var routes = Routes{
 		CaseShow,
 	},
 	Route{
+		"SpecimenShow",
+		"GET",
+		`/specimens/{QRCode}`,
+		SpecimenShow,
+	},
+	Route{
 		"CaseUpdate",
 		"PATCH",
 		`/cases/{caseId:[a-zA-Z0-9=\-\/]{14}}`,
@@ -127,6 +133,12 @@ var routes = Routes{
 		"GET",
 		`/cases/{caseId:[a-zA-Z0-9=\-\/]{14}}/slides`,
 		SlideIndex,
+	},
+	Route{
+		"SpecimenIndex",
+		"GET",
+		`/cases/{caseId:[a-zA-Z0-9=\-\/]{14}}/specimens`,
+		SpecimenIndex,
 	},
 	Route{
 		"CatchAll",
