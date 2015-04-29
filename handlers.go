@@ -425,6 +425,61 @@ func AccountIndex(w http.ResponseWriter, r *http.Request) {
 	JSON(w, results, prettyPrint, 200)
 }
 
+// AccountTypeIndex Return all account information
+func AccountTypeIndex(w http.ResponseWriter, r *http.Request) {
+	accounts := &Account{}
+	prettyPrint := getPrettyPrintValue(r)
+	queryFields := getQueryFieldsValue(r)
+	accountType := getAccountTypeVar(r)
+	sortFields := getSortFields(r)
+	if sortFields == "" {
+		sortFields = " "
+	}
+
+	fields := splitCommaFieldsToMap(queryFields)
+	if queryFields == "" {
+		fields = nil
+	}
+
+	var results []Account
+
+	err := Where(accounts, bson.M{"type": accountType}).Sort(sortFields).Select(fields).All(&results)
+	if err != nil {
+		fmt.Printf("got an error finding account for %s\n", err)
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, results, prettyPrint, 200)
+}
+
+// ClinicIndex Return all clinic information
+func ClinicIndex(w http.ResponseWriter, r *http.Request) {
+	clinics := &Clinic{}
+	prettyPrint := getPrettyPrintValue(r)
+	queryFields := getQueryFieldsValue(r)
+	sortFields := getSortFields(r)
+	if sortFields == "" {
+		sortFields = " "
+	}
+
+	fields := splitCommaFieldsToMap(queryFields)
+	if queryFields == "" {
+		fields = nil
+	}
+
+	var results []Clinic
+
+	err := All(clinics).Sort(sortFields).Select(fields).All(&results)
+	if err != nil {
+		fmt.Printf("got an error finding clinic for %s\n", err)
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, results, prettyPrint, 200)
+}
+
 // CaseIndex Return case detail information for all cases
 func CaseIndex(w http.ResponseWriter, r *http.Request) {
 	cases := &Case{}
@@ -447,10 +502,10 @@ func CaseIndex(w http.ResponseWriter, r *http.Request) {
 		filter = stationSort(filterFields)
 	}
 
-	collection := db.C(cases.Collection())
+	//collection := db.C(cases.Collection())
 
 	var results []Case
-	err := collection.Find(filter).Sort(sortFields).Select(fields).All(&results)
+	err := Where(cases, filter).Sort(sortFields).Select(fields).All(&results)
 	if err != nil {
 		handleError(w, 404)
 		return

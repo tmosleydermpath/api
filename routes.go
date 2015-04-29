@@ -57,10 +57,22 @@ var routes = Routes{
 		AccountIndex,
 	},
 	Route{
+		"AccountTypeIndex",
+		"GET",
+		"/accounts/{accountType}",
+		AccountTypeIndex,
+	},
+	Route{
 		"AccountShow",
 		"GET",
 		`/accounts/{account}`,
 		AccountShow,
+	},
+	Route{
+		"ClinicIndex",
+		"GET",
+		"/clinics",
+		ClinicIndex,
 	},
 	Route{
 		"CaseInsert",

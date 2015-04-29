@@ -147,6 +147,8 @@ func JSON(w http.ResponseWriter, v interface{}, s string, c int) {
 		panic(err)
 	}
 
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(c)
 	w.Write(b)
@@ -203,6 +205,9 @@ func getQRCodeVar(r *http.Request) string {
 }
 func getAccountVar(r *http.Request) string {
 	return getVar(r, "account")
+}
+func getAccountTypeVar(r *http.Request) string {
+	return getVar(r, "accountType")
 }
 func getFilterFields(r *http.Request) string {
 	return getFields(r, "filter")

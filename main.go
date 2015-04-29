@@ -20,7 +20,9 @@ func main() {
 	log.Println("Listening on 10443...")
 
 	// Diable SSL3.0 support
-	config := &tls.Config{MinVersion: tls.VersionTLS10}
+	config := &tls.Config{
+		MinVersion: tls.VersionTLS10,
+	}
 	server := &http.Server{Addr: ":10443", Handler: router, TLSConfig: config}
 	err := server.ListenAndServeTLS("server.crt", "server.key")
 	if err != nil {
