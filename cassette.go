@@ -1,0 +1,56 @@
+package main
+
+import (
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
+)
+
+type CassetteRepository interface {
+	Store(cassettes Cassette)
+	FindById(qrCode string) Cassette
+}
+type Cassette struct {
+	Id             bson.ObjectId `bson:",omitempty" json:",omitempty"`
+	QRCode         string        `bson:"QRCode,omitempty" json:"QRCode,omitempty"`
+	SN             string        `bson:"SN,omitempty" json:"SN,omitempty"`
+	CaseID         string        `bson:"caseID,omitempty" json:"caseID,omitempty"`
+	CuttingProcess bool          `bson:"cuttingProcess,omitempty" json:"cuttingProcess,omitempty"`
+	Gross          *CasGross     `bson:"gross,omitempty" json:"gross,omitempty"`
+	Embedding      *Embedding    `bson:"embedding,omitempty" json:"embedding,omitempty"`
+	Pieces         string        `bson:"pieces,omitempty" json:"pieces,omitempty"`
+	Specimen       string        `bson:"specimen,omitempty" json:"specimen,omitempty"`
+	Tissue         *Tissue       `bson:"tissue,omitempty" json:"tissue,omitempty"`
+}
+
+type CasGross struct {
+	Account string `bson:"account,omitempty" json:"account,omitempty"`
+	Date    int    `bson:"date,omitempty" json:"date,omitempty"`
+}
+
+type Embedding struct {
+	Account string `bson:"account,omitempty" json:"account,omitempty"`
+	Date    int    `bson:"date,omitempty" json:"date,omitempty"`
+}
+type Tissue struct {
+	Account string `bson:"account,omitempty" json:"account,omitempty"`
+	Date    int    `bson:"date,omitempty" json:"date,omitempty"`
+}
+
+func (b *Cassette) Collection() string {
+	return "cassette"
+}
+
+func (b *Cassette) Unique() bson.M {
+	return bson.M{"QRCode": b.QRCode}
+}
+
+func (b *Cassette) Indexes() []mgo.Index {
+	index := mgo.Index{
+		Unique:   true,
+		DropDups: false,
+		Key:      []string{"_id"},
+	}
+	return []mgo.Index{index}
+}
+
+type Cassettes []*Cassette
