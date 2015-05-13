@@ -12,7 +12,7 @@ func init() {
 	// Connect to Mongo instance
 	session, err := mgo.Dial(MongoURI)
 
-	session.SetBatch(250)
+	session.SetBatch(100)
 	session.SetPrefetch(0.25)
 
 	// Check for connection issues
