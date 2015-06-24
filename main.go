@@ -8,7 +8,7 @@
 package main
 
 import (
-	"crypto/tls"
+	_ "expvar"
 	"log"
 	"net/http"
 )
@@ -17,14 +17,14 @@ func main() {
 
 	router := NewRouter()
 
-	log.Println("Listening on 10443...")
-
 	// Diable SSL3.0 support
-	config := &tls.Config{
-		MinVersion: tls.VersionTLS10,
-	}
-	server := &http.Server{Addr: ":10443", Handler: router, TLSConfig: config}
-	err := server.ListenAndServeTLS("server.crt", "server.key")
+	//config := &tls.Config{
+	//	MinVersion: tls.VersionTLS10,
+	//}
+	//server := &http.Server{Addr: ":10443", Handler: router, TLSConfig: config}
+	//err := server.ListenAndServeTLS("server.crt", "server.key")
+	server := &http.Server{Addr: ":8080", Handler: router}
+	err := server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}

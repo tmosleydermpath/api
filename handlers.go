@@ -505,7 +505,8 @@ func CaseIndex(w http.ResponseWriter, r *http.Request) {
 	//collection := db.C(cases.Collection())
 
 	var results []Case
-	err := Where(cases, filter).Sort(sortFields).Select(fields).All(&results)
+	iter := Where(cases, filter).Sort(sortFields).Select(fields).Iter()
+	err := iter.All(&results)
 	if err != nil {
 		handleError(w, 404)
 		return

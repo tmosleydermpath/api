@@ -1,8 +1,6 @@
 package main
 
-import (
-	"net/http"
-)
+import "net/http"
 
 type Route struct {
 	Name        string
@@ -59,7 +57,7 @@ var routes = Routes{
 	Route{
 		"AccountTypeIndex",
 		"GET",
-		"/accounts/{accountType}",
+		"/accounts/type/{accountType}",
 		AccountTypeIndex,
 	},
 	Route{
