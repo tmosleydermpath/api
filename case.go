@@ -5,11 +5,13 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+// CaseRepository interface should allow cases to be stored and retrieved
 type CaseRepository interface {
 	Store(cases Case)
 	FindById(caseID string) Case
 }
 
+// DepartList represents information regarding workflow stations
 type DepartList struct {
 	Collection    bool `bson:"Collection" json:"Collection"`
 	Cutting       bool `bson:"Cutting" json:"Cutting"`
@@ -23,6 +25,7 @@ type DepartList struct {
 	Transcription bool `bson:"Transcription" json:"Transcription"`
 }
 
+// Patient represents information about patient data
 type Patient struct {
 	MRN        *string `bson:"MRN,omitempty" json:"MRN,omitempty"`
 	SSN        *string `bson:"SSN,omitempty" json:"SSN,omitempty"`
@@ -35,8 +38,10 @@ type Patient struct {
 	Race       *string `bson:"race,omitempty" json:"race,omitempty"`
 	Sex        *string `bson:"sex,omitempty" json:"sex,omitempty"`
 }
+
+// Case represents information about patient cases
 type Case struct {
-	Id                       bson.ObjectId `bson:",omitempty" json:",omitempty"`
+	ID                       bson.ObjectId `bson:",omitempty" json:",omitempty"`
 	MOHS                     bool          `bson:"MOHS,omitempty" json:"MOHS,omitempty"`
 	NY                       bool          `bson:"NY,omitempty" json:"NY,omitempty"`
 	AccessioningCompleteTime int           `bson:"accessioningCompleteTime,omitempty" json:"accessioningCompleteTime,omitempty"`
@@ -81,6 +86,7 @@ type Case struct {
 	//Extra                    bson.M        `bson:",inline"`
 }
 
+// Specimens represents information regarding patient specimens
 type Specimens []struct {
 	PAS             bool             `bson:"PAS,omitempty" json:"PAS,omitempty"`
 	QRCode          string           `bson:"QRCode,omitempty" json:"QRCode,omitempty"`
@@ -112,10 +118,12 @@ type Specimens []struct {
 	Type            string           `bson:"type,omitempty" json:"type,omitempty"`
 }
 
+// Insurance represents information about patient information for a case
 type Insurance []struct {
 	Type string `bson:"type,omitempty" json:"type,omitempty"`
 }
 
+// SlidePrepDiagno represents information about diagnosis for slide prep cases
 type SlidePrepDiagno struct {
 	Date  int    `bson:"date,omitempty" json:"date,omitempty"`
 	Diag  string `bson:"diag,omitempty" json:"diag,omitempty"`
@@ -124,6 +132,7 @@ type SlidePrepDiagno struct {
 	Note  string `bson:"note,omitempty" json:"note,omitempty"`
 }
 
+// DisplayType represents information about types of notifications that are displayed
 type DisplayType struct {
 	R string `bson:"R,omitempty" json:"R,omitempty"`
 	S struct {
@@ -133,6 +142,8 @@ type DisplayType struct {
 		//Extra bson.M `bson:",inline"`
 	}
 }
+
+// Gross represents gross information in the case
 type Gross struct {
 	Account   string `bson:"account" json:"account"`
 	CutMethod string `bson:"cutMethod" json:"cutMethod"`
@@ -142,19 +153,23 @@ type Gross struct {
 	Term      string `bson:"term" json:"term"`
 }
 
+// Collect represents information regarding completion time at Accessioning
 type Collect struct {
 	Account string `bson:"account,omitempty" json:"account,omitempty"`
 	Date    int    `bson:"date,omitempty" json:"date,omitempty"`
 }
 
+// Collection method returns string with collection name
 func (c *Case) Collection() string {
 	return "DLCSCase"
 }
 
+// Unique methos returns unique document from MongoDB
 func (c *Case) Unique() bson.M {
 	return bson.M{"caseID": c.CaseID}
 }
 
+//Indexes ensures all indexes are present
 func (c *Case) Indexes() []mgo.Index {
 	index := mgo.Index{
 		Unique:   false,
@@ -164,4 +179,5 @@ func (c *Case) Indexes() []mgo.Index {
 	return []mgo.Index{index}
 }
 
+// Cases represents a slice of Case
 type Cases []Case

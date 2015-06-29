@@ -5,6 +5,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+// Account represents information about user accounts within system
 type Account struct {
 	DragonDetection    bool                   `bson:"dragonDetection,omitempty" json:"dragonDetection,omitempty"`
 	NPI                string                 `bson:"NPI,omitempty" json:"NPI,omitempty"`
@@ -66,16 +67,19 @@ type Account struct {
 	Zip                string                 `bson:"zip,omitempty" json:"zip,omitempty"`
 }
 
+// ShowReport represents information about types of reports available
+// for Accounts
 type ShowReport struct {
 	Addr      *bool `bson:"Addr,omitempty" json:"Addr,omitempty"`
 	CPT       *bool `bson:"CPT,omitempty" json:"CPT,omitemtpy"`
 	Deplicate *bool `bson:"Deplicate,omitempty" json:"Deplicate,omitempty"`
 	History   *bool `bson:"History,omitempty" json:"History,omitempty"`
-	ICD_9     *bool `bson:"ICD-9,omitempty" json:"ICD-9,omitempty"`
+	Icd9      *bool `bson:"ICD-9,omitempty" json:"ICD-9,omitempty"`
 	Phone     *bool `bson:"Phone,omitempty" json:"Phone,omitempty"`
 	SSN       *bool `bson:"SSN,omitempty" jsoon:"SSN,omitempty"`
 }
 
+// Diagnosis represents information about the diagnosis
 type Diagnosis []struct {
 	Desc  string `bson:"desc,omitempty" json:"desc,omitempty"`
 	Diag  string `bson:"diag,omitempty" json:"diag,omitempty"`
@@ -83,14 +87,17 @@ type Diagnosis []struct {
 	Micro string `bson:"micro,omitempty" json:"micro,omitempty"`
 }
 
+// Collection method returns collection name
 func (a *Account) Collection() string {
 	return "Accounts"
 }
 
+// Unique method returns a unique document from MongoDB
 func (a *Account) Unique() bson.M {
 	return bson.M{"account": a.Account}
 }
 
+// Indexes method ensures the proper indexes are in place
 func (a *Account) Indexes() []mgo.Index {
 	index := mgo.Index{
 		Unique:   true,

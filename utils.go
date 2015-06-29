@@ -168,7 +168,7 @@ func JsonIndent(v interface{}, s string) (rj []byte, err error) {
 		rj, err := json.MarshalIndent(v, "", "    ")
 		return rj, err
 	}
-	return rj, err
+	//return rj, err
 }
 
 func getUrlVars(r *http.Request) map[string]string {
