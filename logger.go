@@ -18,6 +18,7 @@ var (
 	reset   = string([]byte{27, 91, 48, 109})
 )
 
+// colorForStatus represents different colors for different status messages
 func colorForStatus(code int) string {
 	switch {
 	case code >= 200 && code <= 299:
@@ -31,6 +32,7 @@ func colorForStatus(code int) string {
 	}
 }
 
+// colorForMethod represents different colors for different methods
 func colorForMethod(method string) string {
 	switch {
 	case method == "GET":
@@ -52,6 +54,7 @@ func colorForMethod(method string) string {
 	}
 }
 
+// Logger allows us to chain different middleware
 func Logger(inner http.Handler, name string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()

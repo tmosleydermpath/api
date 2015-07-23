@@ -5,6 +5,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+// Clinic represents information regarding Clinicians location
 type Clinic struct {
 	LKKEY          string     `bson:"LK_KEY,omitempty" json:"LK_KEY,omitempty"`
 	Active         bool       `bson:"active,omitempty" json:"active,omitempty"`
@@ -29,6 +30,7 @@ type Clinic struct {
 	Zip            string     `bson:"zip,omitempty" json:"zip,omitempty"`
 }
 
+// PickupDay represents information regarding courier pickup
 type PickupDay struct {
 	Fri   string `bson:"Fri,omitempty" json:"Fri,omitempty"`
 	Mon   string `bson:"Mon,omitempty" json:"Mon,omitempty"`
@@ -38,14 +40,22 @@ type PickupDay struct {
 	Wed   string `bson:"Wed,omitempty" json:"Wed,omitempty"`
 }
 
+// Collection method provides MongoDB collection name
 func (c *Clinic) Collection() string {
 	return "Clinics"
 }
 
+// Move method returns collection name of moved documents
+func (c *Clinic) Move() string {
+	return "Clinics_removed"
+}
+
+// Unique method provides unique MongoDB document
 func (c *Clinic) Unique() bson.M {
 	return bson.M{"clinic": c.Clinic}
 }
 
+// Indexes ensures proper indexes are present
 func (c *Clinic) Indexes() []mgo.Index {
 	index := mgo.Index{
 		Unique:   true,

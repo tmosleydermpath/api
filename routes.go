@@ -2,6 +2,7 @@ package main
 
 import "net/http"
 
+// Route represents information for url routing
 type Route struct {
 	Name        string
 	Method      string
@@ -9,6 +10,7 @@ type Route struct {
 	HandlerFunc http.HandlerFunc
 }
 
+// Routes represents a slice of Route
 type Routes []Route
 
 var routes = Routes{
@@ -91,6 +93,12 @@ var routes = Routes{
 		CassetteIndex,
 	},
 	Route{
+		"CassetteDelete",
+		"DELETE",
+		`/cases/{caseId:[a-zA-Z0-9=\-\/]{14}}/cassettes`,
+		CassetteDelete,
+	},
+	Route{
 		"CassetteInsert",
 		"POST",
 		"/cassettes",
@@ -109,10 +117,10 @@ var routes = Routes{
 		CassetteUpdate,
 	},
 	Route{
-		"CassetteDelete",
+		"SingleCassetteDelete",
 		"DELETE",
 		`/cassettes/{QRCode:\w{10,14}}`,
-		CassetteDelete,
+		SingleCassetteDelete,
 	},
 	Route{
 		"SlideInsert",

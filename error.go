@@ -1,5 +1,6 @@
 package main
 
+// Error represents information regarding errors and status
 type Error struct {
 	Error  string `json:"error"`
 	Status int    `json:"status"`

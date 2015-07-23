@@ -141,8 +141,10 @@ func filteringFields(s string) (m map[string]interface{}) {
 	}
 	return m
 }
+
+// JSON writes out pretty print JSON
 func JSON(w http.ResponseWriter, v interface{}, s string, c int) {
-	b, err := JsonIndent(v, s)
+	b, err := JSONIndent(v, s)
 	if err != nil {
 		panic(err)
 	}
@@ -154,24 +156,26 @@ func JSON(w http.ResponseWriter, v interface{}, s string, c int) {
 	w.Write(b)
 }
 
+// JSONError pretty prints any errors
 func JSONError(w http.ResponseWriter, v interface{}, c int) {
 	b, _ := json.MarshalIndent(v, "", "    ")
 	w.WriteHeader(c)
 	w.Write(b)
 }
 
-func JsonIndent(v interface{}, s string) (rj []byte, err error) {
+// JSONIndent pretty prints any JSON information
+func JSONIndent(v interface{}, s string) (rj []byte, err error) {
 	if len(s) != 0 && s == "false" {
 		rj, err := json.Marshal(v)
 		return rj, err
-	} else {
-		rj, err := json.MarshalIndent(v, "", "    ")
-		return rj, err
 	}
+	rj, err = json.MarshalIndent(v, "", "    ")
+	return rj, err
+
 	//return rj, err
 }
 
-func getUrlVars(r *http.Request) map[string]string {
+func getURLVars(r *http.Request) map[string]string {
 	return mux.Vars(r)
 }
 
@@ -181,7 +185,7 @@ func getFields(r *http.Request, f string) string {
 }
 
 func getVar(r *http.Request, v string) string {
-	vars := getUrlVars(r)
+	vars := getURLVars(r)
 	return vars[v]
 }
 
@@ -193,10 +197,10 @@ func getQueryFieldsValue(r *http.Request) string {
 	return getFields(r, "fields")
 }
 
-func getCaseIdVar(r *http.Request) string {
+func getCaseIDVar(r *http.Request) string {
 	return getVar(r, "caseId")
 }
-func getCodeIdVar(r *http.Request) string {
+func getCodeIDVar(r *http.Request) string {
 	return getVar(r, "codeId")
 }
 

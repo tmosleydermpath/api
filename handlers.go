@@ -4,6 +4,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"gopkg.in/mgo.v2"
@@ -26,7 +27,7 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 	cases := &Case{}
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
-	caseID := getCaseIdVar(r)
+	caseID := getCaseIDVar(r)
 	fields := splitCommaFieldsToMap(queryFields)
 	if queryFields == "" {
 		fields = nil
@@ -62,9 +63,31 @@ func SpecimenShow(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// CaseRetrieve retrieves the case
+func CaseRetreive(caseID string) *Case {
+	cases := &Case{}
+	err := Find(&Case{CaseID: caseID}).One(&cases)
+	if err == mgo.ErrNotFound {
+		log.Fatal(err)
+	}
+	return cases
+}
+
+// CaseMove Move case to removed collection
+func CaseMove(cases *Case) {
+
+	err := Move(cases)
+	if err == mgo.ErrNotFound {
+		log.Fatalln(err)
+	}
+}
+
 // CaseDelete Delete case detail
 func CaseDelete(w http.ResponseWriter, r *http.Request) {
-	caseID := getCaseIdVar(r)
+	caseID := getCaseIDVar(r)
+
+	retrievedCase := CaseRetreive(caseID)
+	CaseMove(retrievedCase)
 
 	err := Delete(&Case{CaseID: caseID})
 	if err == mgo.ErrNotFound {
@@ -77,7 +100,7 @@ func CaseDelete(w http.ResponseWriter, r *http.Request) {
 // CaseUpdate Update individual case details
 func CaseUpdate(w http.ResponseWriter, r *http.Request) {
 	cases := &Case{}
-	caseID := getCaseIdVar(r)
+	caseID := getCaseIDVar(r)
 	prettyPrint := getPrettyPrintValue(r)
 	collection := db.C(cases.Collection())
 
@@ -197,8 +220,43 @@ func SlideInsert(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// CassetteDelete Delete information for individual cassette
+// CaseRetrieve retrieves the case
+func CassetteRetreive(caseID string) {
+	cassettes := &[]Cassette{}
+	err := Find(&Cassette{CaseID: caseID}).All(cassettes)
+	if err == mgo.ErrNotFound {
+		log.Fatal(err)
+	}
+	log.Println(cassettes)
+}
+
+// CassetteMove Move cassette document to removed collection
+func CassetteMove(cassettes *Cassette) {
+
+	err := Move(cassettes)
+	if err == mgo.ErrNotFound {
+		log.Fatalln(err)
+	}
+}
+
+// CassetteDelete Moves cassette to new collection and deletes old docs
 func CassetteDelete(w http.ResponseWriter, r *http.Request) {
+	caseID := getCaseIDVar(r)
+	log.Println(caseID)
+
+	//retrievedCassettes := CassetteRetreive(caseID)
+	//log.Println(retrievedCassettes)
+	//CaseMove(retrievedCase)
+
+	//err := Delete(&Case{CaseID: caseID})
+	//if err == mgo.ErrNotFound {
+	//	handleError(w, 404)
+	//	return
+	//}
+}
+
+// SingleCassetteDelete Delete information for individual cassette
+func SingleCassetteDelete(w http.ResponseWriter, r *http.Request) {
 	qrCode := getQRCodeVar(r)
 	err := Delete(&Cassette{QRCode: qrCode})
 	if err == mgo.ErrNotFound {
@@ -289,7 +347,7 @@ func AccountShow(w http.ResponseWriter, r *http.Request) {
 // CassetteIndex Return all cassette information for specific case
 func CassetteIndex(w http.ResponseWriter, r *http.Request) {
 	cassettes := &Cassette{}
-	caseID := getCaseIdVar(r)
+	caseID := getCaseIDVar(r)
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
 	sortFields := getSortFields(r)
@@ -319,7 +377,7 @@ func CassetteIndex(w http.ResponseWriter, r *http.Request) {
 // SpecimenIndex Return all cassette information for specific case
 func SpecimenIndex(w http.ResponseWriter, r *http.Request) {
 	cases := &Case{}
-	caseID := getCaseIdVar(r)
+	caseID := getCaseIDVar(r)
 	prettyPrint := getPrettyPrintValue(r)
 	sortFields := getSortFields(r)
 	if sortFields == "" {
@@ -345,7 +403,7 @@ func SpecimenIndex(w http.ResponseWriter, r *http.Request) {
 // SlideIndex Return all slide information for specific case
 func SlideIndex(w http.ResponseWriter, r *http.Request) {
 	slides := &Slide{}
-	caseID := getCaseIdVar(r)
+	caseID := getCaseIDVar(r)
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
 	sortFields := getSortFields(r)

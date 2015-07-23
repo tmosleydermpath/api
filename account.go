@@ -92,6 +92,11 @@ func (a *Account) Collection() string {
 	return "Accounts"
 }
 
+// Move method returns collection name of moved documents
+func (a *Account) Move() string {
+	return "Accounts_removed"
+}
+
 // Unique method returns a unique document from MongoDB
 func (a *Account) Unique() bson.M {
 	return bson.M{"account": a.Account}

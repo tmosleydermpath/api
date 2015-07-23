@@ -164,6 +164,11 @@ func (c *Case) Collection() string {
 	return "DLCSCase"
 }
 
+// Move method returns string with collection name of moved documents
+func (c *Case) Move() string {
+	return "DLCSCase_removed"
+}
+
 // Unique methos returns unique document from MongoDB
 func (c *Case) Unique() bson.M {
 	return bson.M{"caseID": c.CaseID}
