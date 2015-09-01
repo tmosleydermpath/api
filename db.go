@@ -2,6 +2,7 @@ package main
 
 import "gopkg.in/mgo.v2"
 
+// const MongoURI URL for the MongoDB instance
 const MongoURI = "10.30.178.203:27017/DLCS_SCRUBBED"
 
 //const MongoURI = "10.30.43.104:27017/DLCS_DEV"

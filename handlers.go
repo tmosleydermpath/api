@@ -64,7 +64,7 @@ func SpecimenShow(w http.ResponseWriter, r *http.Request) {
 }
 
 // CaseRetrieve retrieves the case
-func CaseRetreive(caseID string) *Case {
+func CaseRetrieve(caseID string) *Case {
 	cases := &Case{}
 	err := Find(&Case{CaseID: caseID}).One(&cases)
 	if err == mgo.ErrNotFound {
@@ -86,7 +86,7 @@ func CaseMove(cases *Case) {
 func CaseDelete(w http.ResponseWriter, r *http.Request) {
 	caseID := getCaseIDVar(r)
 
-	retrievedCase := CaseRetreive(caseID)
+	retrievedCase := CaseRetrieve(caseID)
 	CaseMove(retrievedCase)
 
 	//retrievedCassette := CassetteRetrieve(caseID)
@@ -244,7 +244,7 @@ func CassetteRetrieve(caseID string) []Cassette {
 	return results
 }
 
-// CassetteRetrieve retrieves the cassettes for a case
+// CassetteIDRetrieve retrieves the ID of the cassettes for a case
 func CassetteIDRetrieve(caseID string) []Cassette {
 	//cassettes := &Cassettes{}
 	cassette := &Cassette{}
@@ -286,7 +286,7 @@ func CassetteDelete(caseID string) {
 	//	}
 	//}
 
-	//retrievedCassettes := CassetteRetreive(caseID)
+	//retrievedCassettes := CassetteRetrieve(caseID)
 	//log.Println(retrievedCassettes)
 	//CaseMove(retrievedCase)
 
