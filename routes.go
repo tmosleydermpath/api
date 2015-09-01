@@ -2,7 +2,10 @@ package main
 
 import "net/http"
 
+<<<<<<< HEAD
 // Route represents information for url routing
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 type Route struct {
 	Name        string
 	Method      string
@@ -10,7 +13,10 @@ type Route struct {
 	HandlerFunc http.HandlerFunc
 }
 
+<<<<<<< HEAD
 // Routes represents a slice of Route
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 type Routes []Route
 
 var routes = Routes{
@@ -59,7 +65,11 @@ var routes = Routes{
 	Route{
 		"AccountTypeIndex",
 		"GET",
+<<<<<<< HEAD
 		"/accounts/type/{accountType}",
+=======
+		"/accounts/{accountType}",
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 		AccountTypeIndex,
 	},
 	Route{
@@ -93,12 +103,15 @@ var routes = Routes{
 		CassetteIndex,
 	},
 	Route{
+<<<<<<< HEAD
 		"SingleCassetteDelete",
 		"DELETE",
 		`/cases/{caseId:[a-zA-Z0-9=\-\/]{14}}/cassettes`,
 		SingleCassetteDelete,
 	},
 	Route{
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 		"CassetteInsert",
 		"POST",
 		"/cassettes",
@@ -117,10 +130,17 @@ var routes = Routes{
 		CassetteUpdate,
 	},
 	Route{
+<<<<<<< HEAD
 		"SingleCassetteDelete",
 		"DELETE",
 		`/cassettes/{QRCode:\w{10,14}}`,
 		SingleCassetteDelete,
+=======
+		"CassetteDelete",
+		"DELETE",
+		`/cassettes/{QRCode:\w{10,14}}`,
+		CassetteDelete,
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 	},
 	Route{
 		"SlideInsert",

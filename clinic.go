@@ -5,7 +5,10 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+<<<<<<< HEAD
 // Clinic represents information regarding Clinicians location
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 type Clinic struct {
 	LKKEY          string     `bson:"LK_KEY,omitempty" json:"LK_KEY,omitempty"`
 	Active         bool       `bson:"active,omitempty" json:"active,omitempty"`
@@ -30,7 +33,10 @@ type Clinic struct {
 	Zip            string     `bson:"zip,omitempty" json:"zip,omitempty"`
 }
 
+<<<<<<< HEAD
 // PickupDay represents information regarding courier pickup
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 type PickupDay struct {
 	Fri   string `bson:"Fri,omitempty" json:"Fri,omitempty"`
 	Mon   string `bson:"Mon,omitempty" json:"Mon,omitempty"`
@@ -40,22 +46,31 @@ type PickupDay struct {
 	Wed   string `bson:"Wed,omitempty" json:"Wed,omitempty"`
 }
 
+<<<<<<< HEAD
 // Collection method provides MongoDB collection name
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 func (c *Clinic) Collection() string {
 	return "Clinics"
 }
 
+<<<<<<< HEAD
 // Move method returns collection name of moved documents
 func (c *Clinic) Move() string {
 	return "Clinics_removed"
 }
 
 // Unique method provides unique MongoDB document
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 func (c *Clinic) Unique() bson.M {
 	return bson.M{"clinic": c.Clinic}
 }
 
+<<<<<<< HEAD
 // Indexes ensures proper indexes are present
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 func (c *Clinic) Indexes() []mgo.Index {
 	index := mgo.Index{
 		Unique:   true,

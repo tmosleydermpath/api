@@ -2,6 +2,7 @@ package main
 
 import "gopkg.in/mgo.v2"
 
+<<<<<<< HEAD
 const MongoURI = "10.30.178.203:27017/DLCS_SCRUBBED"
 
 //const MongoURI = "10.30.43.104:27017/DLCS_DEV"
@@ -15,6 +16,11 @@ const MongoURI = "10.30.178.203:27017/DLCS_SCRUBBED"
 const dbname = "DLCS"
 
 //const dbname = "DLCS_SCRUBBED"
+=======
+const MongoURI = "tmosley:BackendTest@ds061518.mongolab.com:61518/dlcs_test"
+
+const dbname = "dlcs_test"
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 
 var db *mgo.Database
 
@@ -22,8 +28,13 @@ func init() {
 	// Connect to Mongo instance
 	session, err := mgo.Dial(MongoURI)
 
+<<<<<<< HEAD
 	//session.SetBatch(250)
 	//session.SetPrefetch(0.25)
+=======
+	session.SetBatch(100)
+	session.SetPrefetch(0.25)
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 
 	// Check for connection issues
 	if err != nil {

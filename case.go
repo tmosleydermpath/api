@@ -5,13 +5,19 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+<<<<<<< HEAD
 // CaseRepository interface should allow cases to be stored and retrieved
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 type CaseRepository interface {
 	Store(cases Case)
 	FindById(caseID string) Case
 }
 
+<<<<<<< HEAD
 // DepartList represents information regarding workflow stations
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 type DepartList struct {
 	Collection    bool `bson:"Collection" json:"Collection"`
 	Cutting       bool `bson:"Cutting" json:"Cutting"`
@@ -25,7 +31,10 @@ type DepartList struct {
 	Transcription bool `bson:"Transcription" json:"Transcription"`
 }
 
+<<<<<<< HEAD
 // Patient represents information about patient data
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 type Patient struct {
 	MRN        *string `bson:"MRN,omitempty" json:"MRN,omitempty"`
 	SSN        *string `bson:"SSN,omitempty" json:"SSN,omitempty"`
@@ -38,10 +47,15 @@ type Patient struct {
 	Race       *string `bson:"race,omitempty" json:"race,omitempty"`
 	Sex        *string `bson:"sex,omitempty" json:"sex,omitempty"`
 }
+<<<<<<< HEAD
 
 // Case represents information about patient cases
 type Case struct {
 	ID                       bson.ObjectId `bson:",omitempty" json:",omitempty"`
+=======
+type Case struct {
+	Id                       bson.ObjectId `bson:",omitempty" json:",omitempty"`
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 	MOHS                     bool          `bson:"MOHS,omitempty" json:"MOHS,omitempty"`
 	NY                       bool          `bson:"NY,omitempty" json:"NY,omitempty"`
 	AccessioningCompleteTime int           `bson:"accessioningCompleteTime,omitempty" json:"accessioningCompleteTime,omitempty"`
@@ -86,7 +100,10 @@ type Case struct {
 	//Extra                    bson.M        `bson:",inline"`
 }
 
+<<<<<<< HEAD
 // Specimens represents information regarding patient specimens
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 type Specimens []struct {
 	PAS             bool             `bson:"PAS,omitempty" json:"PAS,omitempty"`
 	QRCode          string           `bson:"QRCode,omitempty" json:"QRCode,omitempty"`
@@ -118,12 +135,18 @@ type Specimens []struct {
 	Type            string           `bson:"type,omitempty" json:"type,omitempty"`
 }
 
+<<<<<<< HEAD
 // Insurance represents information about patient information for a case
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 type Insurance []struct {
 	Type string `bson:"type,omitempty" json:"type,omitempty"`
 }
 
+<<<<<<< HEAD
 // SlidePrepDiagno represents information about diagnosis for slide prep cases
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 type SlidePrepDiagno struct {
 	Date  int    `bson:"date,omitempty" json:"date,omitempty"`
 	Diag  string `bson:"diag,omitempty" json:"diag,omitempty"`
@@ -132,7 +155,10 @@ type SlidePrepDiagno struct {
 	Note  string `bson:"note,omitempty" json:"note,omitempty"`
 }
 
+<<<<<<< HEAD
 // DisplayType represents information about types of notifications that are displayed
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 type DisplayType struct {
 	R string `bson:"R,omitempty" json:"R,omitempty"`
 	S struct {
@@ -142,8 +168,11 @@ type DisplayType struct {
 		//Extra bson.M `bson:",inline"`
 	}
 }
+<<<<<<< HEAD
 
 // Gross represents gross information in the case
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 type Gross struct {
 	Account   string `bson:"account" json:"account"`
 	CutMethod string `bson:"cutMethod" json:"cutMethod"`
@@ -153,28 +182,40 @@ type Gross struct {
 	Term      string `bson:"term" json:"term"`
 }
 
+<<<<<<< HEAD
 // Collect represents information regarding completion time at Accessioning
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 type Collect struct {
 	Account string `bson:"account,omitempty" json:"account,omitempty"`
 	Date    int    `bson:"date,omitempty" json:"date,omitempty"`
 }
 
+<<<<<<< HEAD
 // Collection method returns string with collection name
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 func (c *Case) Collection() string {
 	return "DLCSCase"
 }
 
+<<<<<<< HEAD
 // Move method returns string with collection name of moved documents
 func (c *Case) Move() string {
 	return "DLCSCase_removed"
 }
 
 // Unique methos returns unique document from MongoDB
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 func (c *Case) Unique() bson.M {
 	return bson.M{"caseID": c.CaseID}
 }
 
+<<<<<<< HEAD
 //Indexes ensures all indexes are present
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 func (c *Case) Indexes() []mgo.Index {
 	index := mgo.Index{
 		Unique:   false,
@@ -184,5 +225,8 @@ func (c *Case) Indexes() []mgo.Index {
 	return []mgo.Index{index}
 }
 
+<<<<<<< HEAD
 // Cases represents a slice of Case
+=======
+>>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 type Cases []Case
