@@ -93,10 +93,10 @@ var routes = Routes{
 		CassetteIndex,
 	},
 	Route{
-		"CassetteDelete",
+		"SingleCassetteDelete",
 		"DELETE",
 		`/cases/{caseId:[a-zA-Z0-9=\-\/]{14}}/cassettes`,
-		CassetteDelete,
+		SingleCassetteDelete,
 	},
 	Route{
 		"CassetteInsert",

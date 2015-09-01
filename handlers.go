@@ -89,6 +89,12 @@ func CaseDelete(w http.ResponseWriter, r *http.Request) {
 	retrievedCase := CaseRetreive(caseID)
 	CaseMove(retrievedCase)
 
+	//retrievedCassette := CassetteRetrieve(caseID)
+	retCassID := CassetteIDRetrieve(caseID)
+	fmt.Println("Cassette IDs", retCassID)
+	//CassetteMove(retrievedCassette)
+	CassetteDelete(caseID)
+
 	err := Delete(&Case{CaseID: caseID})
 	if err == mgo.ErrNotFound {
 		handleError(w, 404)
@@ -220,39 +226,75 @@ func SlideInsert(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// CaseRetrieve retrieves the case
-func CassetteRetreive(caseID string) {
-	cassettes := &[]Cassette{}
-	err := Find(&Cassette{CaseID: caseID}).All(cassettes)
+// CassetteRetrieve retrieves the cassettes for a case
+func CassetteRetrieve(caseID string) []Cassette {
+	//cassettes := &Cassettes{}
+	cassette := &Cassette{}
+	collection := db.C(cassette.Collection())
+
+	var results []Cassette
+	//err := Where(cassette, bson.M{"CaseID": caseID}).All(&results)
+	err := collection.Find(bson.M{"caseID": caseID}).All(&results)
+
 	if err == mgo.ErrNotFound {
 		log.Fatal(err)
 	}
-	log.Println(cassettes)
+	fmt.Println("Cassette Retrieve", caseID)
+	fmt.Println("Cassette Retrieve", results)
+	return results
+}
+
+// CassetteRetrieve retrieves the cassettes for a case
+func CassetteIDRetrieve(caseID string) []Cassette {
+	//cassettes := &Cassettes{}
+	cassette := &Cassette{}
+	collection := db.C(cassette.Collection())
+
+	var results []Cassette
+	//err := Where(cassette, bson.M{"CaseID": caseID}).All(&results)
+	err := collection.Find(bson.M{"caseID": caseID}).Select(bson.M{"QRCode": 1}).All(&results)
+
+	if err == mgo.ErrNotFound {
+		log.Fatal(err)
+	}
+	//fmt.Println("Cassette Retrieve", caseID)
+	//fmt.Println("Cassette Retrieve", results)
+	return results
 }
 
 // CassetteMove Move cassette document to removed collection
-func CassetteMove(cassettes *Cassette) {
+func CassetteMove(cassettes []Cassette) {
 
-	err := Move(cassettes)
-	if err == mgo.ErrNotFound {
-		log.Fatalln(err)
+	for _, c := range cassettes {
+		err := Move(&c)
+		if err == mgo.ErrNotFound {
+			log.Fatalln(err)
+		}
 	}
 }
 
 // CassetteDelete Moves cassette to new collection and deletes old docs
-func CassetteDelete(w http.ResponseWriter, r *http.Request) {
-	caseID := getCaseIDVar(r)
+func CassetteDelete(caseID string) {
+	retrievedCassette := CassetteRetrieve(caseID)
+	CassetteMove(retrievedCassette)
 	log.Println(caseID)
+
+	//for _, c := range retrievedCassette {
+	//	err := Delete(&Cassette{CaseID: caseID})
+	//	if err == mgo.ErrNotFound {
+	//		log.Fatalln(err)
+	//	}
+	//}
 
 	//retrievedCassettes := CassetteRetreive(caseID)
 	//log.Println(retrievedCassettes)
 	//CaseMove(retrievedCase)
 
-	//err := Delete(&Case{CaseID: caseID})
-	//if err == mgo.ErrNotFound {
-	//	handleError(w, 404)
-	//	return
-	//}
+	err := Delete(&Cassette{CaseID: caseID})
+	if err == mgo.ErrNotFound {
+		log.Fatal(err)
+		return
+	}
 }
 
 // SingleCassetteDelete Delete information for individual cassette
