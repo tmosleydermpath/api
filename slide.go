@@ -5,12 +5,15 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+// SlideRepository Interface should be used to pull slide info
 type SlideRepository interface {
 	Store(slides Slide)
 	FindById(qrCode string)
 }
+
+// Slide Will be used to retrieve slide information
 type Slide struct {
-	Id        bson.ObjectId `bson:",omitempty" json:",omitempty"`
+	ID        bson.ObjectId `bson:",omitempty" json:",omitempty"`
 	QRCode    string        `bson:"QRCode,omitempty" json:"QRCode,omitempty"`
 	SN        string        `bson:"SN,omitempty" json:"SN,omitempty"`
 	CaseID    string        `bson:"caseID,omitempty" json:"caseID,omitempty"`
@@ -24,16 +27,19 @@ type Slide struct {
 	RecutComm string        `bson:"recutComm,omitempty" json:"reCut,omitEmpty"`
 }
 
+// Cutting Information will be retrieved for cutting
 type Cutting struct {
 	Account string `bson:"account,omitempty" json:"account,omitempty"`
 	Date    int    `bson:"date,omitempty" json:"date,omitempty"`
 }
 
+// Digital information will be retrieved about scanning
 type Digital struct {
 	Account string `bson:"account,omitempty" json:"account,omitempty"`
 	Date    int    `bson:"date,omitempty" json:"date,omitempty"`
 }
 
+// DigitalID information will be retrieved about DigitalID
 type DigitalID struct {
 	AppMag       string `bson:"AppMag,omitempty" json:"AppMag,omitempty"`
 	Date         string `bson:"date,omitempty" json:"date,omitempty"`
@@ -44,6 +50,7 @@ type DigitalID struct {
 	Width        string `bson:"width,omitempty" json:"width,omitempty"`
 }
 
+// Collection will return collection name
 func (s *Slide) Collection() string {
 	return "slide"
 }
@@ -53,10 +60,12 @@ func (s *Slide) Move() string {
 	return "slide_removed"
 }
 
+// Unique method will return unique query result
 func (s *Slide) Unique() bson.M {
 	return bson.M{"QRCode": s.QRCode}
 }
 
+// Indexes method will return index
 func (s *Slide) Indexes() []mgo.Index {
 	index := mgo.Index{
 		Unique:   false,
@@ -66,4 +75,5 @@ func (s *Slide) Indexes() []mgo.Index {
 	return []mgo.Index{index}
 }
 
+// Slides method will return slice of slides
 type Slides []Slide
