@@ -141,15 +141,10 @@ func filteringFields(s string) (m map[string]interface{}) {
 	}
 	return m
 }
-<<<<<<< HEAD
 
 // JSON writes out pretty print JSON
 func JSON(w http.ResponseWriter, v interface{}, s string, c int) {
 	b, err := JSONIndent(v, s)
-=======
-func JSON(w http.ResponseWriter, v interface{}, s string, c int) {
-	b, err := JsonIndent(v, s)
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 	if err != nil {
 		panic(err)
 	}
@@ -161,17 +156,13 @@ func JSON(w http.ResponseWriter, v interface{}, s string, c int) {
 	w.Write(b)
 }
 
-<<<<<<< HEAD
 // JSONError pretty prints any errors
-=======
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 func JSONError(w http.ResponseWriter, v interface{}, c int) {
 	b, _ := json.MarshalIndent(v, "", "    ")
 	w.WriteHeader(c)
 	w.Write(b)
 }
 
-<<<<<<< HEAD
 // JSONIndent pretty prints any JSON information
 func JSONIndent(v interface{}, s string) (rj []byte, err error) {
 	if len(s) != 0 && s == "false" {
@@ -185,20 +176,6 @@ func JSONIndent(v interface{}, s string) (rj []byte, err error) {
 }
 
 func getURLVars(r *http.Request) map[string]string {
-=======
-func JsonIndent(v interface{}, s string) (rj []byte, err error) {
-	if len(s) != 0 && s == "false" {
-		rj, err := json.Marshal(v)
-		return rj, err
-	} else {
-		rj, err := json.MarshalIndent(v, "", "    ")
-		return rj, err
-	}
-	return rj, err
-}
-
-func getUrlVars(r *http.Request) map[string]string {
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 	return mux.Vars(r)
 }
 
@@ -208,11 +185,7 @@ func getFields(r *http.Request, f string) string {
 }
 
 func getVar(r *http.Request, v string) string {
-<<<<<<< HEAD
 	vars := getURLVars(r)
-=======
-	vars := getUrlVars(r)
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 	return vars[v]
 }
 
@@ -224,17 +197,10 @@ func getQueryFieldsValue(r *http.Request) string {
 	return getFields(r, "fields")
 }
 
-<<<<<<< HEAD
 func getCaseIDVar(r *http.Request) string {
 	return getVar(r, "caseId")
 }
 func getCodeIDVar(r *http.Request) string {
-=======
-func getCaseIdVar(r *http.Request) string {
-	return getVar(r, "caseId")
-}
-func getCodeIdVar(r *http.Request) string {
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 	return getVar(r, "codeId")
 }
 

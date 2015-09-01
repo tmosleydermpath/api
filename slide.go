@@ -48,14 +48,11 @@ func (s *Slide) Collection() string {
 	return "slide"
 }
 
-<<<<<<< HEAD
 // Move method returns string with collection name of moved documents
 func (s *Slide) Move() string {
 	return "slide_removed"
 }
 
-=======
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 func (s *Slide) Unique() bson.M {
 	return bson.M{"QRCode": s.QRCode}
 }
