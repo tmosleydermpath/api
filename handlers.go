@@ -4,10 +4,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-<<<<<<< HEAD
 	"log"
-=======
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 	"net/http"
 
 	"gopkg.in/mgo.v2"
@@ -30,11 +27,7 @@ func CaseShow(w http.ResponseWriter, r *http.Request) {
 	cases := &Case{}
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
-<<<<<<< HEAD
 	caseID := getCaseIDVar(r)
-=======
-	caseID := getCaseIdVar(r)
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 	fields := splitCommaFieldsToMap(queryFields)
 	if queryFields == "" {
 		fields = nil
@@ -70,7 +63,6 @@ func SpecimenShow(w http.ResponseWriter, r *http.Request) {
 
 }
 
-<<<<<<< HEAD
 // CaseRetrieve retrieves the case
 func CaseRetreive(caseID string) *Case {
 	cases := &Case{}
@@ -102,11 +94,6 @@ func CaseDelete(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Cassette IDs", retCassID)
 	//CassetteMove(retrievedCassette)
 	CassetteDelete(caseID)
-=======
-// CaseDelete Delete case detail
-func CaseDelete(w http.ResponseWriter, r *http.Request) {
-	caseID := getCaseIdVar(r)
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 
 	err := Delete(&Case{CaseID: caseID})
 	if err == mgo.ErrNotFound {
@@ -119,11 +106,7 @@ func CaseDelete(w http.ResponseWriter, r *http.Request) {
 // CaseUpdate Update individual case details
 func CaseUpdate(w http.ResponseWriter, r *http.Request) {
 	cases := &Case{}
-<<<<<<< HEAD
 	caseID := getCaseIDVar(r)
-=======
-	caseID := getCaseIdVar(r)
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 	prettyPrint := getPrettyPrintValue(r)
 	collection := db.C(cases.Collection())
 
@@ -243,7 +226,6 @@ func SlideInsert(w http.ResponseWriter, r *http.Request) {
 
 }
 
-<<<<<<< HEAD
 // CassetteRetrieve retrieves the cassettes for a case
 func CassetteRetrieve(caseID string) []Cassette {
 	//cassettes := &Cassettes{}
@@ -317,10 +299,6 @@ func CassetteDelete(caseID string) {
 
 // SingleCassetteDelete Delete information for individual cassette
 func SingleCassetteDelete(w http.ResponseWriter, r *http.Request) {
-=======
-// CassetteDelete Delete information for individual cassette
-func CassetteDelete(w http.ResponseWriter, r *http.Request) {
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 	qrCode := getQRCodeVar(r)
 	err := Delete(&Cassette{QRCode: qrCode})
 	if err == mgo.ErrNotFound {
@@ -411,11 +389,7 @@ func AccountShow(w http.ResponseWriter, r *http.Request) {
 // CassetteIndex Return all cassette information for specific case
 func CassetteIndex(w http.ResponseWriter, r *http.Request) {
 	cassettes := &Cassette{}
-<<<<<<< HEAD
 	caseID := getCaseIDVar(r)
-=======
-	caseID := getCaseIdVar(r)
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
 	sortFields := getSortFields(r)
@@ -445,11 +419,7 @@ func CassetteIndex(w http.ResponseWriter, r *http.Request) {
 // SpecimenIndex Return all cassette information for specific case
 func SpecimenIndex(w http.ResponseWriter, r *http.Request) {
 	cases := &Case{}
-<<<<<<< HEAD
 	caseID := getCaseIDVar(r)
-=======
-	caseID := getCaseIdVar(r)
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 	prettyPrint := getPrettyPrintValue(r)
 	sortFields := getSortFields(r)
 	if sortFields == "" {
@@ -475,11 +445,7 @@ func SpecimenIndex(w http.ResponseWriter, r *http.Request) {
 // SlideIndex Return all slide information for specific case
 func SlideIndex(w http.ResponseWriter, r *http.Request) {
 	slides := &Slide{}
-<<<<<<< HEAD
 	caseID := getCaseIDVar(r)
-=======
-	caseID := getCaseIdVar(r)
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 	prettyPrint := getPrettyPrintValue(r)
 	queryFields := getQueryFieldsValue(r)
 	sortFields := getSortFields(r)
@@ -639,13 +605,8 @@ func CaseIndex(w http.ResponseWriter, r *http.Request) {
 	//collection := db.C(cases.Collection())
 
 	var results []Case
-<<<<<<< HEAD
 	iter := Where(cases, filter).Sort(sortFields).Select(fields).Iter()
 	err := iter.All(&results)
-=======
-	err := Where(cases, filter).Sort(sortFields).Select(fields).All(&results)
-	//err := iter.All(&results)
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 	if err != nil {
 		handleError(w, 404)
 		return

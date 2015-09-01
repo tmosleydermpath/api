@@ -8,10 +8,7 @@
 package main
 
 import (
-<<<<<<< HEAD
 	_ "expvar"
-=======
->>>>>>> a1e0e468b830fd9f6f6a7d69a13e9b162a07ce21
 	"log"
 	"net/http"
 )

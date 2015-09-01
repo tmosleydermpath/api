@@ -117,10 +117,10 @@ var routes = Routes{
 		CassetteUpdate,
 	},
 	Route{
-		"CassetteDelete",
+		"SingleCassetteDelete",
 		"DELETE",
 		`/cassettes/{QRCode:\w{10,14}}`,
-		CassetteDelete,
+		SingleCassetteDelete,
 	},
 	Route{
 		"SlideInsert",
