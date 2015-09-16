@@ -89,11 +89,9 @@ func CaseDelete(w http.ResponseWriter, r *http.Request) {
 	retrievedCase := CaseRetrieve(caseID)
 	CaseMove(retrievedCase)
 
-	//retrievedCassette := CassetteRetrieve(caseID)
-	retCassID := CassetteIDRetrieve(caseID)
-	fmt.Println("Cassette IDs", retCassID)
-	//CassetteMove(retrievedCassette)
 	CassetteDelete(caseID)
+
+	SlideDelete(caseID)
 
 	err := Delete(&Case{CaseID: caseID})
 	if err == mgo.ErrNotFound {
@@ -228,37 +226,29 @@ func SlideInsert(w http.ResponseWriter, r *http.Request) {
 
 // CassetteRetrieve retrieves the cassettes for a case
 func CassetteRetrieve(caseID string) []Cassette {
-	//cassettes := &Cassettes{}
 	cassette := &Cassette{}
 	collection := db.C(cassette.Collection())
 
 	var results []Cassette
-	//err := Where(cassette, bson.M{"CaseID": caseID}).All(&results)
 	err := collection.Find(bson.M{"caseID": caseID}).All(&results)
 
 	if err == mgo.ErrNotFound {
 		log.Fatal(err)
 	}
-	fmt.Println("Cassette Retrieve", caseID)
-	fmt.Println("Cassette Retrieve", results)
 	return results
 }
 
 // CassetteIDRetrieve retrieves the ID of the cassettes for a case
 func CassetteIDRetrieve(caseID string) []Cassette {
-	//cassettes := &Cassettes{}
 	cassette := &Cassette{}
 	collection := db.C(cassette.Collection())
 
 	var results []Cassette
-	//err := Where(cassette, bson.M{"CaseID": caseID}).All(&results)
 	err := collection.Find(bson.M{"caseID": caseID}).Select(bson.M{"QRCode": 1}).All(&results)
 
 	if err == mgo.ErrNotFound {
 		log.Fatal(err)
 	}
-	//fmt.Println("Cassette Retrieve", caseID)
-	//fmt.Println("Cassette Retrieve", results)
 	return results
 }
 
@@ -277,23 +267,13 @@ func CassetteMove(cassettes []Cassette) {
 func CassetteDelete(caseID string) {
 	retrievedCassette := CassetteRetrieve(caseID)
 	CassetteMove(retrievedCassette)
-	log.Println(caseID)
+	log.Println(retrievedCassette)
 
-	//for _, c := range retrievedCassette {
-	//	err := Delete(&Cassette{CaseID: caseID})
-	//	if err == mgo.ErrNotFound {
-	//		log.Fatalln(err)
-	//	}
-	//}
-
-	//retrievedCassettes := CassetteRetrieve(caseID)
-	//log.Println(retrievedCassettes)
-	//CaseMove(retrievedCase)
-
-	err := Delete(&Cassette{CaseID: caseID})
-	if err == mgo.ErrNotFound {
-		log.Fatal(err)
-		return
+	for _, c := range retrievedCassette {
+		err := Delete(&c)
+		if err == mgo.ErrNotFound {
+			log.Fatalln(err)
+		}
 	}
 }
 
@@ -308,13 +288,66 @@ func SingleCassetteDelete(w http.ResponseWriter, r *http.Request) {
 }
 
 // SlideDelete Delete information for individual slide
-func SlideDelete(w http.ResponseWriter, r *http.Request) {
+func SingleSlideDelete(w http.ResponseWriter, r *http.Request) {
 	qrCode := getQRCodeVar(r)
 	err := Delete(&Slide{QRCode: qrCode})
 	if err == mgo.ErrNotFound {
 		handleError(w, 404)
 		return
 	}
+}
+
+// SlideIDRetrieve retrieves the ID of the slides for a case
+func SlideIDRetrieve(caseID string) []Slide {
+	slide := &Slide{}
+	collection := db.C(slide.Collection())
+
+	var results []Slide
+	err := collection.Find(bson.M{"caseID": caseID}).Select(bson.M{"QRCode": 1}).All(&results)
+
+	if err == mgo.ErrNotFound {
+		log.Fatal(err)
+	}
+	return results
+}
+
+// SlideMove Move slide document to removed collection
+func SlideMove(slides []Slide) {
+
+	for _, c := range slides {
+		err := Move(&c)
+		if err == mgo.ErrNotFound {
+			log.Fatalln(err)
+		}
+	}
+}
+
+// SlideDelete Moves slide to new collection and deletes old docs
+func SlideDelete(caseID string) {
+	retrievedSlide := SlideRetrieve(caseID)
+	SlideMove(retrievedSlide)
+	log.Println(retrievedSlide)
+
+	for _, c := range retrievedSlide {
+		err := Delete(&c)
+		if err == mgo.ErrNotFound {
+			log.Fatalln(err)
+		}
+	}
+}
+
+// SlideRetrieve retrieves the slides for a case
+func SlideRetrieve(caseID string) []Slide {
+	slide := &Slide{}
+	collection := db.C(slide.Collection())
+
+	var results []Slide
+	err := collection.Find(bson.M{"caseID": caseID}).All(&results)
+
+	if err == mgo.ErrNotFound {
+		log.Fatal(err)
+	}
+	return results
 }
 
 // CassetteShow Return information for individual cassette

@@ -144,7 +144,7 @@ var routes = Routes{
 		"SlideDelete",
 		"DELETE",
 		`/slides/{QRCode:\w{10,14}}`,
-		SlideDelete,
+		SingleSlideDelete,
 	},
 	Route{
 		"SlideIndex",

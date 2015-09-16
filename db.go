@@ -3,9 +3,9 @@ package main
 import "gopkg.in/mgo.v2"
 
 // const MongoURI URL for the MongoDB instance
-const MongoURI = "tmosley:BackendTest@ds035713.mongolab.com:35713/dlcs"
+//const MongoURI = "tmosley:BackendTest@ds035713.mongolab.com:35713/dlcs"
 
-//const MongoURI = "10.30.178.203:27017/DLCS_SCRUBBED"
+const MongoURI = "10.30.178.203:27017/DLCS_SCRUBBED"
 
 //const MongoURI = "10.30.43.104:27017/DLCS_DEV"
 
@@ -14,9 +14,9 @@ const MongoURI = "tmosley:BackendTest@ds035713.mongolab.com:35713/dlcs"
 //const MongoURI = "tmosley:BackendTest@ds043927.mongolab.com:43927/dlcs"
 //const dbname = "dlcs_test"
 
-const dbname = "dlcs"
+//const dbname = "dlcs"
 
-//const dbname = "DLCS_SCRUBBED"
+const dbname = "DLCS_SCRUBBED"
 
 var db *mgo.Database
 
