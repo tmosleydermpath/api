@@ -93,12 +93,6 @@ var routes = Routes{
 		CassetteIndex,
 	},
 	Route{
-		"SingleCassetteDelete",
-		"DELETE",
-		`/cases/{caseId:[a-zA-Z0-9=\-\/]{14}}/cassettes`,
-		SingleCassetteDelete,
-	},
-	Route{
 		"CassetteInsert",
 		"POST",
 		"/cassettes",
@@ -117,10 +111,10 @@ var routes = Routes{
 		CassetteUpdate,
 	},
 	Route{
-		"SingleCassetteDelete",
+		"CassetteDelete",
 		"DELETE",
 		`/cassettes/{QRCode:\w{10,14}}`,
-		SingleCassetteDelete,
+		CassetteDelete,
 	},
 	Route{
 		"SlideInsert",
@@ -144,7 +138,7 @@ var routes = Routes{
 		"SlideDelete",
 		"DELETE",
 		`/slides/{QRCode:\w{10,14}}`,
-		SingleSlideDelete,
+		SlideDelete,
 	},
 	Route{
 		"SlideIndex",

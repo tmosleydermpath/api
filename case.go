@@ -1,6 +1,10 @@
 package main
 
 import (
+	"encoding/json"
+	"log"
+	"net/http"
+
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -186,3 +190,139 @@ func (c *Case) Indexes() []mgo.Index {
 
 // Cases represents a slice of Case
 type Cases []Case
+
+// CaseIndex Return case detail information for all cases
+func CaseIndex(w http.ResponseWriter, r *http.Request) {
+	cases := &Case{}
+	prettyPrint := getPrettyPrintValue(r)
+	queryFields := getQueryFieldsValue(r)
+	filterFields := getFilterFields(r)
+	sortFields := getSortFields(r)
+	if sortFields == "" {
+		sortFields = " "
+	}
+
+	fields := splitCommaFieldsToMap(queryFields)
+	if queryFields == "" {
+		fields = nil
+	}
+	var filter = bson.M{}
+	if filterFields == "" {
+		filter = bson.M{}
+	} else {
+		filter = stationSort(filterFields)
+	}
+
+	//collection := db.C(cases.Collection())
+
+	var results []Case
+	iter := Where(cases, filter).Sort(sortFields).Select(fields).Iter()
+	err := iter.All(&results)
+	if err != nil {
+		handleError(w, 404)
+		return
+	}
+	JSON(w, results, prettyPrint, 200)
+}
+
+// CaseInsert Insert new case detail for individual case
+func CaseInsert(w http.ResponseWriter, r *http.Request) {
+	cases := &Case{}
+	prettyPrint := getPrettyPrintValue(r)
+	collection := db.C(cases.Collection())
+
+	json.NewDecoder(r.Body).Decode(&cases)
+
+	err := collection.Insert(&cases)
+	if err == mgo.ErrNotFound {
+		handleError(w, 405)
+		return
+	}
+
+	JSON(w, cases, prettyPrint, 200)
+
+}
+
+// CaseShow Return case detail information for individual case
+func CaseShow(w http.ResponseWriter, r *http.Request) {
+	cases := &Case{}
+	prettyPrint := getPrettyPrintValue(r)
+	queryFields := getQueryFieldsValue(r)
+	caseID := getCaseIDVar(r)
+	fields := splitCommaFieldsToMap(queryFields)
+	if queryFields == "" {
+		fields = nil
+	}
+
+	collection := db.C(cases.Collection())
+
+	err := collection.Find(bson.M{"caseID": caseID}).Select(fields).One(&cases)
+	if err == mgo.ErrNotFound {
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, cases, prettyPrint, 200)
+
+}
+
+// CaseUpdate Update individual case details
+func CaseUpdate(w http.ResponseWriter, r *http.Request) {
+	cases := &Case{}
+	caseID := getCaseIDVar(r)
+	prettyPrint := getPrettyPrintValue(r)
+	collection := db.C(cases.Collection())
+
+	json.NewDecoder(r.Body).Decode(&cases)
+	change := mgo.Change{
+		Update:    bson.M{"$set": &cases},
+		ReturnNew: true,
+	}
+
+	_, err := collection.Find(bson.M{"caseID": caseID}).Apply(change, &cases)
+	if err == mgo.ErrNotFound {
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, cases, prettyPrint, 200)
+
+}
+
+// CaseDelete Delete case detail
+func CaseDelete(w http.ResponseWriter, r *http.Request) {
+	caseID := getCaseIDVar(r)
+
+	retrievedCase := CaseRetrieve(caseID)
+	CaseMove(retrievedCase)
+
+	SoftCassetteDelete(caseID)
+
+	SoftSlideDelete(caseID)
+
+	err := Delete(&Case{CaseID: caseID})
+	if err == mgo.ErrNotFound {
+		handleError(w, 404)
+		return
+	}
+
+}
+
+// CaseMove Move case to removed collection
+func CaseMove(cases *Case) {
+
+	err := Move(cases)
+	if err == mgo.ErrNotFound {
+		log.Fatalln(err)
+	}
+}
+
+// CaseRetrieve retrieves the case
+func CaseRetrieve(caseID string) *Case {
+	cases := &Case{}
+	err := Find(&Case{CaseID: caseID}).One(&cases)
+	if err == mgo.ErrNotFound {
+		log.Fatal(err)
+	}
+	return cases
+}
