@@ -3,7 +3,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"net/url"
 
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -40,6 +42,32 @@ func AccountShow(w http.ResponseWriter, r *http.Request) {
 	}
 
 	JSON(w, accounts, prettyPrint, 200)
+
+}
+
+// ClinicShow Return clinic information for individual account
+func ClinicShow(w http.ResponseWriter, r *http.Request) {
+	clinics := &Clinic{}
+	prettyPrint := getPrettyPrintValue(r)
+	queryFields := getQueryFieldsValue(r)
+	clinicName, err2 := url.QueryUnescape(getClinicVar(r))
+	if err2 != nil {
+		log.Fatal(err2)
+	}
+	fields := splitCommaFieldsToMap(queryFields)
+	if queryFields == "" {
+		fields = nil
+	}
+
+	collection := db.C(clinics.Collection())
+
+	err := collection.Find(bson.M{"clinic": clinicName}).Select(fields).One(&clinics)
+	if err == mgo.ErrNotFound {
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, clinics, prettyPrint, 200)
 
 }
 
@@ -107,6 +135,33 @@ func CodeIndex(w http.ResponseWriter, r *http.Request) {
 	err := All(codes).Sort(sortFields).Select(fields).All(&results)
 	if err != nil {
 		fmt.Printf("got an error finding code for %s\n", err)
+		handleError(w, 404)
+		return
+	}
+
+	JSON(w, results, prettyPrint, 200)
+}
+
+// SPCodeIndex Return all slide information for specific case
+func SPCodeIndex(w http.ResponseWriter, r *http.Request) {
+	spcodes := &SPCode{}
+	prettyPrint := getPrettyPrintValue(r)
+	queryFields := getQueryFieldsValue(r)
+	sortFields := getSortFields(r)
+	if sortFields == "" {
+		sortFields = " "
+	}
+
+	fields := splitCommaFieldsToMap(queryFields)
+	if queryFields == "" {
+		fields = nil
+	}
+
+	var results []SPCode
+
+	err := All(spcodes).Sort(sortFields).Select(fields).All(&results)
+	if err != nil {
+		fmt.Printf("got an error finding slide prep code for %s\n", err)
 		handleError(w, 404)
 		return
 	}

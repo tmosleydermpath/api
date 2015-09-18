@@ -213,6 +213,9 @@ func getAccountVar(r *http.Request) string {
 func getAccountTypeVar(r *http.Request) string {
 	return getVar(r, "accountType")
 }
+func getClinicVar(r *http.Request) string {
+	return getVar(r, "clinic")
+}
 func getFilterFields(r *http.Request) string {
 	return getFields(r, "filter")
 }

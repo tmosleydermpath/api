@@ -51,6 +51,12 @@ var routes = Routes{
 		CodeIndex,
 	},
 	Route{
+		"SPCodeIndex",
+		"GET",
+		"/slideprepcodes",
+		SPCodeIndex,
+	},
+	Route{
 		"AccountIndex",
 		"GET",
 		"/accounts",
@@ -73,6 +79,12 @@ var routes = Routes{
 		"GET",
 		"/clinics",
 		ClinicIndex,
+	},
+	Route{
+		"ClinicShow",
+		"GET",
+		`/clinics/{clinic}`,
+		ClinicShow,
 	},
 	Route{
 		"CaseInsert",

@@ -9,6 +9,7 @@ package main
 
 import (
 	_ "expvar"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -23,6 +24,7 @@ func main() {
 	//}
 	//server := &http.Server{Addr: ":10443", Handler: router, TLSConfig: config}
 	//err := server.ListenAndServeTLS("server.crt", "server.key")
+	fmt.Println("Listening on port 8080...")
 	server := &http.Server{Addr: ":8080", Handler: router}
 	err := server.ListenAndServe()
 	if err != nil {
