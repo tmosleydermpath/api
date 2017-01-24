@@ -1,10 +1,3 @@
-// @APIVersion 0.0.1
-// @APITitle Case Management API
-// @APIDescription Toolkit for interacting with Cases in 2.0.0
-// @Contact tmosley@dermpathlab.com
-// @TermsOfServiceUrl http://dermpathlab.com/
-// @License BSD
-// @LicenseUrl http://opensource.org/licenses/BSD-2-Clause
 package main
 
 import (
@@ -12,6 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
@@ -26,8 +22,13 @@ func main() {
 	//err := server.ListenAndServeTLS("server.crt", "server.key")
 	fmt.Println("Listening on port 8080...")
 	server := &http.Server{Addr: ":8080", Handler: router}
-	err := server.ListenAndServe()
-	if err != nil {
-		log.Fatal(err)
-	}
+	go func() {
+		log.Fatal(server.ListenAndServe())
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Printf("Shutdown signal received, exiting...")
+
 }
