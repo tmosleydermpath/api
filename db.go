@@ -1,6 +1,10 @@
 package main
 
-import "gopkg.in/mgo.v2"
+import (
+	"os"
+
+	"gopkg.in/mgo.v2"
+)
 
 // const MongoURI URL for the MongoDB instance
 const MongoURI = "api:apitest@ds035713.mongolab.com:35713/dlcs"
@@ -14,13 +18,14 @@ const MongoURI = "api:apitest@ds035713.mongolab.com:35713/dlcs"
 //const MongoURI = "tmosley:BackendTest@ds043927.mongolab.com:43927/dlcs"
 //const dbname = "dlcs_test"
 
-const dbname = "dlcs"
-
+//const dbname = "dlcs"
 //const dbname = "DLCS"
+//dbname := os.Getenv("API_DB_NAME")
 
 var db *mgo.Database
 
 func init() {
+	dbname := os.Getenv("API_DB_NAME")
 	// Connect to Mongo instance
 	session, err := mgo.Dial(MongoURI)
 

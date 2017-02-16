@@ -2,7 +2,7 @@ package main
 
 import (
 	_ "expvar"
-	"fmt"
+	"flag"
 	"log"
 	"net/http"
 	"os"
@@ -10,7 +10,12 @@ import (
 	"syscall"
 )
 
+var (
+	httpAddr = flag.String("http", "0.0.0.0:8080", "HTTP service address.")
+)
+
 func main() {
+	flag.Parse()
 
 	router := NewRouter()
 
@@ -20,10 +25,11 @@ func main() {
 	//}
 	//server := &http.Server{Addr: ":10443", Handler: router, TLSConfig: config}
 	//err := server.ListenAndServeTLS("server.crt", "server.key")
-	fmt.Println("Listening on port 8080...")
-	server := &http.Server{Addr: ":8080", Handler: router}
+	log.Println("Starting API Server...")
+	log.Printf("HTTP service listening on %s", *httpAddr)
+	httpServer := &http.Server{Addr: *httpAddr, Handler: router}
 	go func() {
-		log.Fatal(server.ListenAndServe())
+		log.Fatal(httpServer.ListenAndServe())
 	}()
 
 	quit := make(chan os.Signal, 1)
