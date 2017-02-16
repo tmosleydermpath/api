@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -62,12 +61,6 @@ func Logger(inner http.Handler, name string) http.Handler {
 		inner.ServeHTTP(w, r)
 		method := r.Method
 		methodColor := colorForMethod(method)
-		f, err := os.OpenFile("APIlogfile", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-		if err != nil {
-			log.Fatalf("error opening file: %v", err)
-		}
-		defer f.Close()
-		log.SetOutput(f)
 
 		log.Printf(
 			"%s| %s |%s\t%s\t%s\t%s",
