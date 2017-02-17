@@ -150,4 +150,10 @@ var routes = Routes{
 		`/{path:.*}`,
 		Index,
 	},
+	Route{
+		"CatchAll",
+		"GET",
+		`/{path:.*}`,
+		HealthIndex,
+	},
 }
